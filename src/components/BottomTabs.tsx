@@ -16,7 +16,10 @@ const tabs = [
 
 export function BottomTabs({ activeTab, onChange }: BottomTabsProps) {
   return (
-    <nav className="fixed inset-x-0 bottom-0 z-20 border-t border-[oklch(86%_0.018_94_/_0.12)] bg-[oklch(12%_0.015_165_/_0.94)] px-3 pb-3 pt-2 backdrop-blur">
+    <nav
+      aria-label="Primary"
+      className="fixed inset-x-0 bottom-0 z-20 border-t border-[oklch(86%_0.018_94_/_0.12)] bg-[oklch(12%_0.015_165_/_0.94)] px-3 pb-3 pt-2 backdrop-blur"
+    >
       <div className="mx-auto grid max-w-md grid-cols-4 gap-2">
         {tabs.map((tab) => {
           const Icon = tab.icon;
@@ -26,6 +29,7 @@ export function BottomTabs({ activeTab, onChange }: BottomTabsProps) {
             <button
               key={tab.id}
               type="button"
+              aria-current={active ? 'page' : undefined}
               onClick={() => onChange(tab.id)}
               className={`flex min-h-14 flex-col items-center justify-center rounded-[1rem] text-[11px] font-bold transition duration-200 active:translate-y-px ${
                 active

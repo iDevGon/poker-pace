@@ -17,6 +17,24 @@ describe('Poker Pace app', () => {
     ).toBeInTheDocument();
   });
 
+  it('exposes primary structure and current progress to assistive technology', () => {
+    render(<App />);
+
+    expect(
+      screen.getByRole('link', { name: /skip to content/i }),
+    ).toHaveAttribute('href', '#main-content');
+    expect(
+      screen.getByRole('navigation', { name: /primary/i }),
+    ).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /^today$/i })).toHaveAttribute(
+      'aria-current',
+      'page',
+    );
+    expect(
+      screen.getByRole('progressbar', { name: /course progress/i }),
+    ).toHaveAttribute('aria-valuenow', '0');
+  });
+
   it('lets the user answer a quiz and see an explanation', async () => {
     const user = userEvent.setup();
     render(<App />);

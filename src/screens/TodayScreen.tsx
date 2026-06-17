@@ -62,24 +62,24 @@ export function TodayScreen({
         <p className="relative mt-3 text-sm leading-7 text-[var(--ink-300)]">
           {unit.goal}
         </p>
-        <div className="relative mt-6 grid grid-cols-3 gap-2 text-center text-xs font-bold text-[var(--ink-300)]">
+        <dl className="relative mt-6 grid grid-cols-3 gap-2 text-center text-xs font-bold text-[var(--ink-300)]">
           <div className="border-y border-[oklch(86%_0.018_94_/_0.11)] py-3">
-            Lesson
-            <span className="mt-1 block text-[var(--mint-400)]">short</span>
+            <dt>Lesson</dt>
+            <dd className="mt-1 text-[var(--mint-400)]">short</dd>
           </div>
           <div className="border-y border-[oklch(86%_0.018_94_/_0.11)] py-3">
-            Quiz
-            <span className="mt-1 block text-[var(--mint-400)]">
+            <dt>Quiz</dt>
+            <dd className="mt-1 text-[var(--mint-400)]">
               {unit.quizIds.length}
-            </span>
+            </dd>
           </div>
           <div className="border-y border-[oklch(86%_0.018_94_/_0.11)] py-3">
-            Course
-            <span className="mt-1 block text-[var(--mint-400)]">
+            <dt>Course</dt>
+            <dd className="mt-1 text-[var(--mint-400)]">
               {completedCount}/{totalCount}
-            </span>
+            </dd>
           </div>
-        </div>
+        </dl>
         <button
           type="button"
           onClick={() => onStartLesson(unit.id)}

@@ -101,7 +101,7 @@ export function LessonScreen({
       ) : null}
 
       {phase === 'quiz' && quiz ? (
-        <div className="table-panel rounded-[2rem] p-5">
+        <section aria-live="polite" className="table-panel rounded-[2rem] p-5">
           <div className="flex items-center justify-between gap-3">
             <span className="chip relative px-3 py-1 text-xs font-bold">
               Question {quizIndex + 1}/{unitQuizzes.length}
@@ -124,7 +124,10 @@ export function LessonScreen({
                 <Card key={token} value={token} />
               ))}
           </div>
-          <div className="relative mt-6 space-y-2">
+          <fieldset
+            aria-label="Quiz choices"
+            className="relative mt-6 space-y-2"
+          >
             {quiz.choices.map((choice) => {
               const selected = selectedChoiceId === choice.id;
               const correct = choice.id === quiz.correctChoiceId;
@@ -133,6 +136,7 @@ export function LessonScreen({
                 <button
                   key={choice.id}
                   type="button"
+                  aria-pressed={selected}
                   onClick={() => finishAnswer(choice.id)}
                   className={`flex min-h-13 w-full items-center justify-between rounded-[1.15rem] border px-4 py-3 text-left text-sm font-black transition duration-200 active:translate-y-px ${
                     selected
@@ -152,9 +156,12 @@ export function LessonScreen({
                 </button>
               );
             })}
-          </div>
+          </fieldset>
           {selectedChoiceId ? (
-            <div className="surface relative mt-5 rounded-[1.2rem] p-4">
+            <div
+              aria-live="polite"
+              className="surface relative mt-5 rounded-[1.2rem] p-4"
+            >
               <p className="font-display text-xs font-black uppercase tracking-[0.2em] text-[var(--clay-300)]">
                 Explanation
               </p>
@@ -172,7 +179,7 @@ export function LessonScreen({
               </button>
             </div>
           ) : null}
-        </div>
+        </section>
       ) : null}
 
       {phase === 'done' ? (

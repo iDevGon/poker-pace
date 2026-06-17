@@ -60,18 +60,19 @@ export function TrainerScreen({
             모입니다.
           </p>
         ) : (
-          <div className="mt-4 space-y-2">
+          <ul className="mt-4 space-y-2">
             {missedQuizzes.map((quiz) => (
-              <button
-                key={quiz.id}
-                type="button"
-                onClick={() => onStartQuiz([quiz.id])}
-                className="w-full rounded-[1.2rem] border border-[oklch(86%_0.018_94_/_0.12)] bg-[oklch(13%_0.018_165_/_0.62)] p-4 text-left text-sm font-bold leading-7 text-[var(--ink-200)] transition hover:bg-[oklch(86%_0.018_94_/_0.06)]"
-              >
-                {quiz.prompt}
-              </button>
+              <li key={quiz.id}>
+                <button
+                  type="button"
+                  onClick={() => onStartQuiz([quiz.id])}
+                  className="w-full rounded-[1.2rem] border border-[oklch(86%_0.018_94_/_0.12)] bg-[oklch(13%_0.018_165_/_0.62)] p-4 text-left text-sm font-bold leading-7 text-[var(--ink-200)] transition hover:bg-[oklch(86%_0.018_94_/_0.06)]"
+                >
+                  {quiz.prompt}
+                </button>
+              </li>
             ))}
-          </div>
+          </ul>
         )}
       </div>
     </section>

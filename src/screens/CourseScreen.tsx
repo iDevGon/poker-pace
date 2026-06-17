@@ -32,11 +32,18 @@ export function CourseScreen({
       </div>
 
       {weeks.map((week) => (
-        <div key={week} className="surface rounded-[1.75rem] p-4">
-          <h2 className="font-display text-sm font-black uppercase tracking-[0.2em] text-[var(--clay-300)]">
+        <section
+          key={week}
+          aria-labelledby={`week-${week}-heading`}
+          className="surface rounded-[1.75rem] p-4"
+        >
+          <h2
+            id={`week-${week}-heading`}
+            className="font-display text-sm font-black uppercase tracking-[0.2em] text-[var(--clay-300)]"
+          >
             Week {week}
           </h2>
-          <div className="mt-4 space-y-2">
+          <ul className="mt-4 space-y-2">
             {units
               .filter((unit) => unit.week === week)
               .map((unit) => {
@@ -44,45 +51,49 @@ export function CourseScreen({
                 const recommended = recommendedUnitId === unit.id;
 
                 return (
-                  <button
-                    key={unit.id}
-                    type="button"
-                    onClick={() => onOpenUnit(unit.id)}
-                    className={`flex w-full items-center gap-3 rounded-[1.1rem] border p-3 text-left transition duration-200 active:translate-y-px ${
-                      recommended
-                        ? 'border-[oklch(82%_0.085_55_/_0.5)] bg-[oklch(64%_0.13_43_/_0.12)]'
-                        : 'border-[oklch(86%_0.018_94_/_0.1)] bg-[oklch(13%_0.018_165_/_0.56)] hover:bg-[oklch(86%_0.018_94_/_0.06)]'
-                    }`}
-                  >
-                    {complete ? (
-                      <CheckCircle2
-                        aria-hidden="true"
-                        className="size-5 text-[var(--mint-400)]"
-                      />
-                    ) : (
-                      <Circle
-                        aria-hidden="true"
-                        className="size-5 text-[oklch(55%_0.018_165)]"
-                      />
-                    )}
-                    <div className="min-w-0 flex-1">
-                      <p className="font-display text-xs font-bold uppercase tracking-widest text-[var(--ink-300)]">
-                        Day {unit.day}
-                      </p>
-                      <p className="truncate text-sm font-black text-[var(--ink-100)]">
-                        {unit.title}
-                      </p>
-                    </div>
-                    {recommended ? (
-                      <span className="primary-action rounded-full px-2 py-1 text-[10px] font-black uppercase">
-                        Next
-                      </span>
-                    ) : null}
-                  </button>
+                  <li key={unit.id}>
+                    <button
+                      type="button"
+                      aria-label={`${unit.title}, Week ${unit.week} Day ${unit.day}${
+                        complete ? ', completed' : ''
+                      }${recommended ? ', recommended next' : ''}`}
+                      onClick={() => onOpenUnit(unit.id)}
+                      className={`flex w-full items-center gap-3 rounded-[1.1rem] border p-3 text-left transition duration-200 active:translate-y-px ${
+                        recommended
+                          ? 'border-[oklch(82%_0.085_55_/_0.5)] bg-[oklch(64%_0.13_43_/_0.12)]'
+                          : 'border-[oklch(86%_0.018_94_/_0.1)] bg-[oklch(13%_0.018_165_/_0.56)] hover:bg-[oklch(86%_0.018_94_/_0.06)]'
+                      }`}
+                    >
+                      {complete ? (
+                        <CheckCircle2
+                          aria-hidden="true"
+                          className="size-5 text-[var(--mint-400)]"
+                        />
+                      ) : (
+                        <Circle
+                          aria-hidden="true"
+                          className="size-5 text-[oklch(55%_0.018_165)]"
+                        />
+                      )}
+                      <div className="min-w-0 flex-1">
+                        <p className="font-display text-xs font-bold uppercase tracking-widest text-[var(--ink-300)]">
+                          Day {unit.day}
+                        </p>
+                        <p className="truncate text-sm font-black text-[var(--ink-100)]">
+                          {unit.title}
+                        </p>
+                      </div>
+                      {recommended ? (
+                        <span className="primary-action rounded-full px-2 py-1 text-[10px] font-black uppercase">
+                          Next
+                        </span>
+                      ) : null}
+                    </button>
+                  </li>
                 );
               })}
-          </div>
-        </div>
+          </ul>
+        </section>
       ))}
     </section>
   );

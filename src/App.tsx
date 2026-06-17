@@ -95,7 +95,13 @@ export default function App() {
 
   return (
     <main className="min-h-screen text-[var(--ink-100)]">
-      <div className="app-shell mx-auto min-h-screen w-full max-w-md border-x border-[oklch(86%_0.018_94_/_0.1)] px-5 pb-28 pt-6 shadow-2xl shadow-black/50">
+      <a href="#main-content" className="skip-link">
+        Skip to content
+      </a>
+      <div
+        id="main-content"
+        className="app-shell mx-auto min-h-screen w-full max-w-md border-x border-[oklch(86%_0.018_94_/_0.1)] px-5 pb-28 pt-6 shadow-2xl shadow-black/50"
+      >
         {activeUnit ? (
           <LessonScreen
             unit={activeUnit}

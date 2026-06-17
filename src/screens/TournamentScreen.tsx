@@ -46,29 +46,29 @@ export function TournamentScreen({
         </div>
       </div>
 
-      <div className="space-y-3">
+      <ul className="space-y-3">
         {tournamentChecklistItems.map((item) => (
-          <label
-            key={item.id}
-            className="surface flex gap-3 rounded-[1.5rem] p-4 transition hover:bg-[oklch(86%_0.018_94_/_0.06)]"
-          >
-            <input
-              type="checkbox"
-              checked={Boolean(checklist[item.id])}
-              onChange={() => onToggleItem(item.id)}
-              className="mt-1 size-5 accent-[var(--mint-400)]"
-            />
-            <span>
-              <span className="block text-sm font-black text-[var(--ink-100)]">
-                {item.label}
+          <li key={item.id}>
+            <label className="surface flex gap-3 rounded-[1.5rem] p-4 transition hover:bg-[oklch(86%_0.018_94_/_0.06)]">
+              <input
+                type="checkbox"
+                name={item.id}
+                checked={Boolean(checklist[item.id])}
+                onChange={() => onToggleItem(item.id)}
+                className="mt-1 size-5 accent-[var(--mint-400)]"
+              />
+              <span>
+                <span className="block text-sm font-black text-[var(--ink-100)]">
+                  {item.label}
+                </span>
+                <span className="mt-1 block text-xs font-bold leading-5 text-[var(--ink-300)]">
+                  {item.description}
+                </span>
               </span>
-              <span className="mt-1 block text-xs font-bold leading-5 text-[var(--ink-300)]">
-                {item.description}
-              </span>
-            </span>
-          </label>
+            </label>
+          </li>
         ))}
-      </div>
+      </ul>
     </section>
   );
 }
