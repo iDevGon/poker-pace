@@ -25,7 +25,7 @@ export function BottomTabs({ activeTab, onChange }: BottomTabsProps) {
   return (
     <nav
       aria-label="Primary"
-      className="fixed inset-x-0 bottom-0 z-20 border-t border-[oklch(86%_0.018_94_/_0.12)] bg-[oklch(12%_0.015_165_/_0.98)] px-3 pb-3 pt-2"
+      className="bottom-nav fixed inset-x-0 bottom-0 z-20 border-t border-[oklch(86%_0.018_94_/_0.12)] bg-[oklch(12%_0.015_165_/_0.98)] px-3 pt-2"
     >
       <div className="mx-auto grid max-w-md grid-cols-5 gap-1.5">
         {tabs.map((tab) => {

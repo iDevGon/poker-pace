@@ -100,6 +100,7 @@ input:focus-visible {
 }
 
 .app-shell {
+  padding-bottom: calc(7rem + env(safe-area-inset-bottom, 0px));
   background:
     linear-gradient(
       90deg,
@@ -163,6 +164,10 @@ input:focus-visible {
   border: 1px solid oklch(82% 0.085 55 / 0.34);
   background: oklch(20% 0.03 165);
   color: var(--clay-300);
+}
+
+.bottom-nav {
+  padding-bottom: calc(0.75rem + env(safe-area-inset-bottom, 0px));
 }
 
 @media (prefers-reduced-motion: no-preference) {
