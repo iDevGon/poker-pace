@@ -71,6 +71,44 @@ describe('Poker Pace app', () => {
     ).toBeInTheDocument();
   });
 
+  it('opens the beginner guide with searchable hand and rank references', async () => {
+    const user = userEvent.setup();
+    render(<App />);
+
+    await user.click(screen.getByRole('button', { name: /가이드/i }));
+
+    expect(
+      screen.getByRole('heading', { name: /홀덤 가이드/i }),
+    ).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /족보/i })).toBeInTheDocument();
+    expect(screen.getByLabelText('풀하우스 예시 카드')).toHaveTextContent('K');
+
+    await user.type(
+      screen.getByRole('searchbox', { name: /용어 검색/i }),
+      '에어라인',
+    );
+
+    expect(
+      screen.getByRole('heading', { name: /검색 결과/i }),
+    ).toBeInTheDocument();
+    expect(screen.getByText('에어라인')).toBeInTheDocument();
+    expect(screen.getByText(/AA를 부르는 별칭/i)).toBeInTheDocument();
+    expect(screen.queryByText('로열 플러시')).toBeNull();
+  });
+
+  it('shows an empty guide search state', async () => {
+    const user = userEvent.setup();
+    render(<App />);
+
+    await user.click(screen.getByRole('button', { name: /가이드/i }));
+    await user.type(
+      screen.getByRole('searchbox', { name: /용어 검색/i }),
+      '없는용어',
+    );
+
+    expect(screen.getByText(/일치하는 항목이 없습니다/i)).toBeInTheDocument();
+  });
+
   it('opens the GTO wizard and shows hand action frequencies', async () => {
     const user = userEvent.setup();
     render(<App />);

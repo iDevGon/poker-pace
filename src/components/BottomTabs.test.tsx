@@ -16,4 +16,10 @@ describe('BottomTabs', () => {
 
     expect(screen.queryByRole('button', { name: /대회/i })).toBeNull();
   });
+
+  it('exposes the guide tab', () => {
+    render(<BottomTabs activeTab="today" onChange={vi.fn()} />);
+
+    expect(screen.getByRole('button', { name: /가이드/i })).toBeInTheDocument();
+  });
 });

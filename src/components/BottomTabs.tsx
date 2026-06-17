@@ -1,6 +1,12 @@
-import { BookOpen, Dumbbell, Grid3X3, TimerReset } from 'lucide-react';
+import {
+  BookOpen,
+  BookText,
+  Dumbbell,
+  Grid3X3,
+  TimerReset,
+} from 'lucide-react';
 
-export type TabId = 'today' | 'course' | 'trainer' | 'gto';
+export type TabId = 'today' | 'course' | 'trainer' | 'gto' | 'guide';
 
 type BottomTabsProps = {
   activeTab: TabId;
@@ -12,6 +18,7 @@ const tabs = [
   { id: 'course', label: '코스', icon: BookOpen },
   { id: 'trainer', label: '복습', icon: Dumbbell },
   { id: 'gto', label: 'GTO', icon: Grid3X3 },
+  { id: 'guide', label: '가이드', icon: BookText },
 ] satisfies Array<{ id: TabId; label: string; icon: typeof TimerReset }>;
 
 export function BottomTabs({ activeTab, onChange }: BottomTabsProps) {
@@ -20,7 +27,7 @@ export function BottomTabs({ activeTab, onChange }: BottomTabsProps) {
       aria-label="주요 화면"
       className="bottom-nav fixed inset-x-0 bottom-0 z-20 border-t border-[oklch(86%_0.018_94_/_0.12)] bg-[oklch(12%_0.015_165_/_0.98)] px-3 pt-2"
     >
-      <div className="mx-auto grid max-w-md grid-cols-4 gap-1.5">
+      <div className="mx-auto grid max-w-md grid-cols-5 gap-1">
         {tabs.map((tab) => {
           const Icon = tab.icon;
           const active = activeTab === tab.id;

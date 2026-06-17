@@ -17,6 +17,7 @@ import type {
 } from './domain/types';
 import { CourseScreen } from './screens/CourseScreen';
 import { GTOScreen } from './screens/GTOScreen';
+import { GuideScreen } from './screens/GuideScreen';
 import { LessonScreen } from './screens/LessonScreen';
 import { TodayScreen } from './screens/TodayScreen';
 import { TrainerScreen } from './screens/TrainerScreen';
@@ -130,6 +131,7 @@ export default function App() {
               />
             ) : null}
             {activeTab === 'gto' ? <GTOScreen /> : null}
+            {activeTab === 'guide' ? <GuideScreen /> : null}
           </>
         )}
       </div>
