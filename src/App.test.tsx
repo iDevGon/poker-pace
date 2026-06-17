@@ -46,6 +46,19 @@ describe('Poker Pace app', () => {
     expect(screen.getByText(/해설/i)).toBeInTheDocument();
   });
 
+  it('shows card visuals again inside the quiz explanation', async () => {
+    const user = userEvent.setup();
+    render(<App />);
+
+    await user.click(screen.getByRole('button', { name: /학습 시작/i }));
+    await user.click(screen.getByRole('button', { name: /퀴즈 시작/i }));
+    await user.click(screen.getByRole('button', { name: /fold/i }));
+
+    const explanationCards = screen.getByLabelText('해설 카드 예시');
+    expect(explanationCards).toHaveTextContent('7♣');
+    expect(explanationCards).toHaveTextContent('2♦');
+  });
+
   it('shows an empty missed-question trainer state', async () => {
     const user = userEvent.setup();
     render(<App />);

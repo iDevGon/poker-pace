@@ -16,6 +16,10 @@ const quizTypeLabels = {
   reading: '읽기',
 } as const;
 
+const cardTokenPattern = /[AKQJT98765432][♠♥♦♣]/g;
+
+const getCardTokens = (text: string) => text.match(cardTokenPattern) ?? [];
+
 export function LessonScreen({
   unit,
   onBack,
@@ -33,6 +37,10 @@ export function LessonScreen({
     [unit.quizIds],
   );
   const quiz = unitQuizzes[quizIndex];
+  const promptCards = quiz ? getCardTokens(quiz.prompt) : [];
+  const explanationCards = quiz
+    ? getCardTokens(`${quiz.prompt} ${quiz.explanation}`)
+    : [];
 
   const finishAnswer = (choiceId: string) => {
     if (!quiz || selectedChoiceId) {
@@ -124,14 +132,13 @@ export function LessonScreen({
           <h2 className="font-display relative mt-2 text-xl font-bold leading-8">
             {quiz.prompt}
           </h2>
-          <div className="relative mt-4 flex flex-wrap gap-2">
-            {quiz.prompt
-              .split(/[\s,]+/)
-              .filter((token) => /[AKQJT98765432][♠♥♦♣]/.test(token))
-              .map((token) => (
-                <Card key={token} value={token} />
+          {promptCards.length > 0 ? (
+            <div className="relative mt-4 flex flex-wrap gap-2">
+              {promptCards.map((token, index) => (
+                <Card key={`${token}-${index}`} value={token} />
               ))}
-          </div>
+            </div>
+          ) : null}
           <fieldset
             aria-label="퀴즈 선택지"
             className="relative mt-6 space-y-2"
@@ -174,6 +181,16 @@ export function LessonScreen({
               <p className="mt-2 text-sm leading-7 text-[var(--ink-200)]">
                 {quiz.explanation}
               </p>
+              {explanationCards.length > 0 ? (
+                <fieldset
+                  aria-label="해설 카드 예시"
+                  className="mt-4 flex flex-wrap gap-2"
+                >
+                  {explanationCards.map((token, index) => (
+                    <Card key={`${token}-${index}`} value={token} />
+                  ))}
+                </fieldset>
+              ) : null}
               <button
                 type="button"
                 onClick={nextQuiz}
