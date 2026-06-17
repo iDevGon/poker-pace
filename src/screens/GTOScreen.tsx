@@ -1,7 +1,17 @@
 import { Activity, Grid3X3 } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { gtoSpots, handRanks, handSuits } from '../domain/gto';
-import type { GtoHandStrategy } from '../domain/types';
+import type { GtoHandStrategy, GtoSpot } from '../domain/types';
+
+const categoryLabels: Record<GtoSpot['category'], string> = {
+  Open: 'Open',
+  Defend: 'Defend',
+  'Vs 3-bet': 'Vs 3-bet',
+};
+
+const spotCategories = Array.from(
+  new Set(gtoSpots.map((spot) => spot.category)),
+);
 
 const actionColor = (hand: GtoHandStrategy) => {
   if (hand.raise >= hand.call && hand.raise >= hand.fold) {
@@ -20,10 +30,16 @@ const findHand = (hands: GtoHandStrategy[], handId: string) =>
 
 export function GTOScreen() {
   const [spotId, setSpotId] = useState(gtoSpots[0].id);
+  const [category, setCategory] = useState<GtoSpot['category']>(
+    gtoSpots[0].category,
+  );
   const spot =
     gtoSpots.find((candidate) => candidate.id === spotId) ?? gtoSpots[0];
   const [selectedHandId, setSelectedHandId] = useState('AJs');
   const selectedHand = findHand(spot.hands, selectedHandId);
+  const visibleSpots = gtoSpots.filter(
+    (candidate) => candidate.category === category,
+  );
   const handsById = useMemo(
     () => new Map(spot.hands.map((hand) => [hand.id, hand])),
     [spot.hands],
@@ -36,6 +52,16 @@ export function GTOScreen() {
     setSelectedHandId(findHand(nextSpot.hands, selectedHandId).id);
   };
 
+  const selectCategory = (nextCategory: GtoSpot['category']) => {
+    const nextSpot =
+      gtoSpots.find((candidate) => candidate.category === nextCategory) ??
+      gtoSpots[0];
+
+    setCategory(nextCategory);
+    setSpotId(nextSpot.id);
+    setSelectedHandId(findHand(nextSpot.hands, selectedHandId).id);
+  };
+
   return (
     <section className="rise-in space-y-6">
       <div>
@@ -43,7 +69,7 @@ export function GTOScreen() {
           GTO
         </p>
         <h1 className="font-display mt-3 text-[2rem] font-black leading-tight">
-          GTO Wizard Lite
+          GTO 기준표
         </h1>
         <p className="mt-2 text-sm leading-7 text-[var(--ink-300)]">
           상황별 기준 레인지를 빠르게 확인하고, 상대 성향에 맞춘 익스플로잇
@@ -52,8 +78,30 @@ export function GTOScreen() {
       </div>
 
       <div className="surface rounded-[1.5rem] p-3">
+        <fieldset className="mb-3 grid grid-cols-3 gap-2">
+          <legend className="sr-only">GTO 상황 카테고리</legend>
+          {spotCategories.map((candidate) => {
+            const active = candidate === category;
+
+            return (
+              <button
+                key={candidate}
+                type="button"
+                aria-pressed={active}
+                onClick={() => selectCategory(candidate)}
+                className={`min-h-11 rounded-[0.9rem] border px-2 text-xs font-black transition active:translate-y-px ${
+                  active
+                    ? 'border-[oklch(82%_0.085_55_/_0.44)] bg-[var(--mint-400)] text-[var(--felt-950)]'
+                    : 'border-[oklch(86%_0.018_94_/_0.12)] bg-[oklch(13%_0.018_165_/_0.56)] text-[var(--ink-300)] hover:text-[var(--ink-100)]'
+                }`}
+              >
+                {categoryLabels[candidate]} 상황
+              </button>
+            );
+          })}
+        </fieldset>
         <div className="grid grid-cols-1 gap-2">
-          {gtoSpots.map((candidate) => {
+          {visibleSpots.map((candidate) => {
             const active = candidate.id === spot.id;
 
             return (
@@ -95,50 +143,52 @@ export function GTOScreen() {
           </div>
         </div>
 
-        <fieldset className="relative mt-5 grid grid-cols-[repeat(13,minmax(0,1fr))] gap-1">
-          <legend className="sr-only">{spot.title} hand matrix</legend>
-          {handRanks.flatMap((row) =>
-            handSuits.map((column) => {
-              const rowIndex = handRanks.indexOf(row);
-              const columnIndex = handSuits.indexOf(column);
-              const handId =
-                row === column
-                  ? `${row}${column}`
-                  : rowIndex < columnIndex
-                    ? `${row}${column}s`
-                    : `${column}${row}o`;
-              const hand = handsById.get(handId);
-              const selected = selectedHand.id === handId;
+        <div className="mt-5 max-h-[26rem] overflow-auto overscroll-contain rounded-[0.8rem] border border-[oklch(86%_0.018_94_/_0.12)] p-2">
+          <fieldset className="relative grid w-max grid-cols-[repeat(13,2.75rem)] gap-1">
+            <legend className="sr-only">{spot.title} 핸드 매트릭스</legend>
+            {handRanks.flatMap((row) =>
+              handSuits.map((column) => {
+                const rowIndex = handRanks.indexOf(row);
+                const columnIndex = handSuits.indexOf(column);
+                const handId =
+                  row === column
+                    ? `${row}${column}`
+                    : rowIndex < columnIndex
+                      ? `${row}${column}s`
+                      : `${column}${row}o`;
+                const hand = handsById.get(handId);
+                const selected = selectedHand.id === handId;
 
-              return (
-                <button
-                  key={`${row}-${column}`}
-                  type="button"
-                  aria-pressed={selected}
-                  aria-label={`${handId} ${hand?.raise ?? 0}% raise, ${
-                    hand?.call ?? 0
-                  }% call, ${hand?.fold ?? 0}% fold`}
-                  onClick={() => setSelectedHandId(handId)}
-                  className={`aspect-square rounded-[0.34rem] text-[0.58rem] font-black transition active:scale-95 ${
-                    hand ? actionColor(hand) : 'bg-[var(--felt-800)]'
-                  } ${
-                    selected
-                      ? 'outline outline-2 outline-offset-2 outline-[var(--ink-100)]'
-                      : 'opacity-86 hover:opacity-100'
-                  }`}
-                >
-                  {handId}
-                </button>
-              );
-            }),
-          )}
-        </fieldset>
+                return (
+                  <button
+                    key={`${row}-${column}`}
+                    type="button"
+                    aria-pressed={selected}
+                    aria-label={`${handId} Raise ${hand?.raise ?? 0}%, Call ${
+                      hand?.call ?? 0
+                    }%, Fold ${hand?.fold ?? 0}%`}
+                    onClick={() => setSelectedHandId(handId)}
+                    className={`size-11 rounded-[0.38rem] text-[0.64rem] font-black transition active:scale-95 ${
+                      hand ? actionColor(hand) : 'bg-[var(--felt-800)]'
+                    } ${
+                      selected
+                        ? 'outline outline-2 outline-offset-2 outline-[var(--ink-100)]'
+                        : 'opacity-86 hover:opacity-100'
+                    }`}
+                  >
+                    {handId}
+                  </button>
+                );
+              }),
+            )}
+          </fieldset>
+        </div>
       </section>
 
       <section aria-live="polite" className="surface rounded-[1.5rem] p-5">
         <div className="flex items-center justify-between gap-3">
           <div>
-            <p className="eyebrow">Selected hand</p>
+            <p className="eyebrow">선택한 핸드</p>
             <h2 className="font-display mt-2 text-3xl font-black">
               {selectedHand.id}
             </h2>
@@ -197,7 +247,9 @@ export function GTOScreen() {
         <div className="mt-4 space-y-3 text-sm leading-7 text-[var(--ink-200)]">
           <p>{selectedHand.note}</p>
           <p>
-            <span className="font-black text-[var(--clay-300)]">Exploit:</span>{' '}
+            <span className="font-black text-[var(--clay-300)]">
+              익스플로잇:
+            </span>{' '}
             {selectedHand.exploit}
           </p>
         </div>

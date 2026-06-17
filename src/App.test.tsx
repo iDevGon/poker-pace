@@ -82,11 +82,37 @@ describe('Poker Pace app', () => {
     await user.click(screen.getByRole('button', { name: /AJs/i }));
 
     expect(
-      screen.getByRole('heading', { name: /GTO Wizard Lite/i }),
+      screen.getByRole('heading', { name: /GTO 기준표/i }),
     ).toBeInTheDocument();
     expect(screen.getByText(/Raise 70%/i)).toBeInTheDocument();
     expect(screen.getByText(/Call 20%/i)).toBeInTheDocument();
     expect(screen.getByText(/Fold 10%/i)).toBeInTheDocument();
     expect(screen.getByText(/3-bet이 잦으면/i)).toBeInTheDocument();
+  });
+
+  it('groups GTO spots by category before selecting a situation', async () => {
+    const user = userEvent.setup();
+    render(<App />);
+
+    await user.click(screen.getByRole('button', { name: /^gto$/i }));
+
+    expect(screen.getByRole('button', { name: /Open 상황/i })).toHaveAttribute(
+      'aria-pressed',
+      'true',
+    );
+    expect(
+      screen.getByRole('button', { name: /Defend 상황/i }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: /UTG 오픈/i }),
+    ).toBeInTheDocument();
+
+    await user.click(screen.getByRole('button', { name: /Defend 상황/i }));
+    await user.click(screen.getByRole('button', { name: /BB 디펜스 vs CO/i }));
+
+    expect(
+      screen.getByRole('heading', { name: /BB 디펜스 vs CO/i }),
+    ).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: /UTG 오픈/i })).toBeNull();
   });
 });

@@ -65,6 +65,7 @@ export type GtoHandStrategy = GtoActionMix & {
 
 export type GtoSpot = {
   id: string;
+  category: 'Open' | 'Defend' | 'Vs 3-bet';
   title: string;
   format: string;
   stackDepth: string;
