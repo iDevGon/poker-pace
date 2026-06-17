@@ -15,26 +15,31 @@ export function TournamentScreen({
   ).length;
 
   return (
-    <section className="space-y-5">
+    <section className="rise-in space-y-6">
       <div>
-        <p className="text-sm font-bold uppercase tracking-[0.28em] text-emerald-300">
+        <p className="font-display text-sm font-bold uppercase tracking-[0.28em] text-[var(--mint-400)]">
           Tournament
         </p>
-        <h1 className="mt-3 text-3xl font-black">친구 대회 체크리스트</h1>
-        <p className="mt-2 text-sm leading-6 text-stone-300">
+        <h1 className="font-display mt-3 text-[2rem] font-black leading-tight">
+          친구 대회 체크리스트
+        </h1>
+        <p className="mt-2 text-sm leading-7 text-[var(--ink-300)]">
           당일 운영 앱이 아니라, 시작 전에 친구들과 합의할 항목만 놓치지 않게
           정리합니다.
         </p>
       </div>
 
-      <div className="rounded-[2rem] border border-amber-200/30 bg-amber-200/10 p-5">
+      <div className="table-panel rounded-[2rem] p-5">
         <div className="flex items-center gap-3">
-          <CheckSquare2 aria-hidden="true" className="size-6 text-amber-200" />
-          <div>
-            <p className="text-sm font-black text-amber-100">
+          <CheckSquare2
+            aria-hidden="true"
+            className="relative size-6 text-[var(--clay-300)]"
+          />
+          <div className="relative">
+            <p className="font-display text-sm font-black text-[var(--clay-300)]">
               {doneCount}/{tournamentChecklistItems.length} decided
             </p>
-            <p className="text-xs font-bold text-stone-300">
+            <p className="text-xs font-bold text-[var(--ink-300)]">
               룰은 시작 전에 정해야 게임 중 말이 줄어듭니다.
             </p>
           </div>
@@ -45,19 +50,19 @@ export function TournamentScreen({
         {tournamentChecklistItems.map((item) => (
           <label
             key={item.id}
-            className="flex gap-3 rounded-3xl border border-white/10 bg-white/[0.04] p-4"
+            className="surface flex gap-3 rounded-[1.5rem] p-4 transition hover:bg-[oklch(86%_0.018_94_/_0.06)]"
           >
             <input
               type="checkbox"
               checked={Boolean(checklist[item.id])}
               onChange={() => onToggleItem(item.id)}
-              className="mt-1 size-5 accent-emerald-300"
+              className="mt-1 size-5 accent-[var(--mint-400)]"
             />
             <span>
-              <span className="block text-sm font-black text-stone-100">
+              <span className="block text-sm font-black text-[var(--ink-100)]">
                 {item.label}
               </span>
-              <span className="mt-1 block text-xs font-bold leading-5 text-stone-400">
+              <span className="mt-1 block text-xs font-bold leading-5 text-[var(--ink-300)]">
                 {item.description}
               </span>
             </span>

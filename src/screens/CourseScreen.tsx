@@ -17,27 +17,26 @@ export function CourseScreen({
   const weeks = [1, 2, 3, 4];
 
   return (
-    <section className="space-y-5">
+    <section className="rise-in space-y-6">
       <div>
-        <p className="text-sm font-bold uppercase tracking-[0.28em] text-emerald-300">
+        <p className="font-display text-sm font-bold uppercase tracking-[0.28em] text-[var(--mint-400)]">
           Course
         </p>
-        <h1 className="mt-3 text-3xl font-black">4주 로드맵</h1>
-        <p className="mt-2 text-sm leading-6 text-stone-300">
+        <h1 className="font-display mt-3 text-[2rem] font-black leading-tight">
+          4주 로드맵
+        </h1>
+        <p className="mt-2 text-sm leading-7 text-[var(--ink-300)]">
           권장 순서는 표시하지만 잠금은 없습니다. 오늘 더 풀고 싶으면 바로
           이어가세요.
         </p>
       </div>
 
       {weeks.map((week) => (
-        <div
-          key={week}
-          className="rounded-3xl border border-white/10 bg-white/[0.04] p-4"
-        >
-          <h2 className="text-sm font-black uppercase tracking-[0.2em] text-amber-200">
+        <div key={week} className="surface rounded-[1.75rem] p-4">
+          <h2 className="font-display text-sm font-black uppercase tracking-[0.2em] text-[var(--clay-300)]">
             Week {week}
           </h2>
-          <div className="mt-3 space-y-2">
+          <div className="mt-4 space-y-2">
             {units
               .filter((unit) => unit.week === week)
               .map((unit) => {
@@ -49,33 +48,33 @@ export function CourseScreen({
                     key={unit.id}
                     type="button"
                     onClick={() => onOpenUnit(unit.id)}
-                    className={`flex w-full items-center gap-3 rounded-2xl border p-3 text-left transition ${
+                    className={`flex w-full items-center gap-3 rounded-[1.1rem] border p-3 text-left transition duration-200 active:translate-y-px ${
                       recommended
-                        ? 'border-emerald-300/70 bg-emerald-300/10'
-                        : 'border-white/10 bg-stone-950/40 hover:bg-white/5'
+                        ? 'border-[oklch(82%_0.085_55_/_0.5)] bg-[oklch(64%_0.13_43_/_0.12)]'
+                        : 'border-[oklch(86%_0.018_94_/_0.1)] bg-[oklch(13%_0.018_165_/_0.56)] hover:bg-[oklch(86%_0.018_94_/_0.06)]'
                     }`}
                   >
                     {complete ? (
                       <CheckCircle2
                         aria-hidden="true"
-                        className="size-5 text-emerald-300"
+                        className="size-5 text-[var(--mint-400)]"
                       />
                     ) : (
                       <Circle
                         aria-hidden="true"
-                        className="size-5 text-stone-500"
+                        className="size-5 text-[oklch(55%_0.018_165)]"
                       />
                     )}
                     <div className="min-w-0 flex-1">
-                      <p className="text-xs font-bold uppercase tracking-widest text-stone-400">
+                      <p className="font-display text-xs font-bold uppercase tracking-widest text-[var(--ink-300)]">
                         Day {unit.day}
                       </p>
-                      <p className="truncate text-sm font-black text-stone-100">
+                      <p className="truncate text-sm font-black text-[var(--ink-100)]">
                         {unit.title}
                       </p>
                     </div>
                     {recommended ? (
-                      <span className="rounded-full bg-emerald-300 px-2 py-1 text-[10px] font-black uppercase text-stone-950">
+                      <span className="primary-action rounded-full px-2 py-1 text-[10px] font-black uppercase">
                         Next
                       </span>
                     ) : null}

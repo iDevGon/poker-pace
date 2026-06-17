@@ -94,8 +94,8 @@ export default function App() {
   };
 
   return (
-    <main className="min-h-screen bg-[radial-gradient(circle_at_top,#166534_0%,#0c0a09_34%,#0c0a09_100%)] text-stone-50">
-      <div className="mx-auto min-h-screen w-full max-w-md border-x border-white/10 bg-stone-950/86 px-5 pb-28 pt-6 shadow-2xl shadow-black">
+    <main className="min-h-screen text-[var(--ink-100)]">
+      <div className="app-shell mx-auto min-h-screen w-full max-w-md border-x border-[oklch(86%_0.018_94_/_0.1)] px-5 pb-28 pt-6 shadow-2xl shadow-black/50">
         {activeUnit ? (
           <LessonScreen
             unit={activeUnit}
