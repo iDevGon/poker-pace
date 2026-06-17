@@ -200,9 +200,312 @@ export const quizzes: Quiz[] = [
       '익스플로잇은 상대의 반복 실수를 이용하는 조정입니다. 과폴드하는 블라인드에게는 더 넓게 오픈합니다.',
     tags: ['exploit', 'preflop'],
   },
+  {
+    id: 'q-blinds-action-1',
+    type: 'decision',
+    prompt:
+      'SB가 0.5BB, BB가 1BB를 낸 뒤 UTG가 3BB로 오픈했습니다. 내 자리는 HJ이고 A♦ T♣ 오프수트입니다. 기본 선택은?',
+    context:
+      '9명 테이블, 80BB, 초반 포지션 오픈 뒤 아직 뒤에 CO/BTN/SB/BB가 남음',
+    choices: basicChoices,
+    correctChoiceId: 'fold',
+    explanation:
+      'ATo는 겉보기엔 좋아도 UTG 오픈 상대로는 자주 지배당합니다. 뒤에 남은 플레이어도 많아 초보자는 폴드가 안전합니다.',
+    tags: ['preflop', 'position'],
+  },
+  {
+    id: 'q-limp-trap-1',
+    type: 'decision',
+    prompt:
+      '앞에서 두 명이 림프했고 나는 CO에서 K♠ Q♠를 받았습니다. 블라인드는 패시브하고 3-bet이 거의 없습니다.',
+    context: '60BB, 친구 토너먼트 초반, 림프가 많은 테이블',
+    choices: basicChoices,
+    correctChoiceId: 'raise',
+    explanation:
+      'KQs는 여러 림퍼를 상대로 가치가 있는 핸드입니다. 크게 무리하지 않는 사이즈로 레이즈해 주도권과 포지션을 활용합니다.',
+    tags: ['preflop', 'limp', 'position'],
+  },
+  {
+    id: 'q-call-vs-raise-1',
+    type: 'decision',
+    prompt:
+      'BTN이 2.5BB로 오픈했고 나는 BB에서 A♣ 9♦를 받았습니다. BTN은 넓게 오픈하지만 플랍 이후 C-bet을 자주 합니다.',
+    context: '40BB, 헤즈업으로 플랍을 볼 수 있는 빅블라인드 방어 상황',
+    choices: basicChoices,
+    correctChoiceId: 'call',
+    explanation:
+      'A9o는 BTN 오픈 상대로 즉시 버리기엔 아쉽지만 3-bet으로 키우기엔 애매합니다. 초보자는 콜 후 좋은 플랍에서만 계속합니다.',
+    tags: ['preflop', 'defense', 'position'],
+  },
+  {
+    id: 'q-small-pair-1',
+    type: 'decision',
+    prompt:
+      'LJ가 2.5BB로 오픈했고 나는 BTN에서 5♣ 5♥를 받았습니다. 두 사람 모두 70BB 이상을 가지고 있습니다.',
+    context: '깊은 스택, 포지션 있음, 뒤 블라인드는 타이트함',
+    choices: basicChoices,
+    correctChoiceId: 'call',
+    explanation:
+      '작은 포켓 페어는 셋을 맞추면 큰 팟을 이길 수 있습니다. 스택이 깊고 포지션이 있어 콜이 가능한 자리입니다.',
+    tags: ['preflop', 'pocket-pair', 'position'],
+  },
+  {
+    id: 'q-suited-connector-1',
+    type: 'decision',
+    prompt:
+      'UTG가 오픈했고 MP가 콜했습니다. 나는 CO에서 8♥ 7♥를 받았습니다. 뒤에는 BTN과 블라인드가 남아 있습니다.',
+    context: '45BB, 여러 명이 팟에 들어온 프리플랍',
+    choices: basicChoices,
+    correctChoiceId: 'fold',
+    explanation:
+      '수딧 커넥터는 예쁘지만 초반 오픈과 콜 뒤에는 역으로 큰 팟을 잃기 쉽습니다. 스택도 아주 깊지 않아 폴드가 낫습니다.',
+    tags: ['preflop', 'connector', 'position'],
+  },
+  {
+    id: 'q-bb-defense-tight-1',
+    type: 'decision',
+    prompt:
+      'CO가 2.2BB로 오픈했고 나는 BB에서 Q♠ J♦를 받았습니다. CO는 타이트하지만 스틸 시도는 가끔 합니다.',
+    context: '35BB, 앤티 있음, 콜하면 포지션 없이 플랍 진행',
+    choices: basicChoices,
+    correctChoiceId: 'call',
+    explanation:
+      'QJo는 완벽하진 않지만 작은 오픈 사이즈와 앤티 때문에 BB에서 방어할 수 있습니다. 단, 탑페어를 맞춰도 과신하지 않습니다.',
+    tags: ['preflop', 'defense', 'stack'],
+  },
+  {
+    id: 'q-sb-complete-1',
+    type: 'decision',
+    prompt:
+      '모두 폴드했고 나는 SB에서 9♣ 6♣를 받았습니다. BB는 체크를 많이 하고 레이즈가 거의 없습니다.',
+    context: '50BB, SB vs BB, 팟에는 블라인드만 있음',
+    choices: basicChoices,
+    correctChoiceId: 'call',
+    explanation:
+      'SB는 포지션이 나쁘지만 BB가 패시브하면 작은 비용으로 플랍을 볼 수 있습니다. 큰 팟을 만들 생각은 하지 않습니다.',
+    tags: ['preflop', 'blind', 'exploit'],
+  },
+  {
+    id: 'q-flop-top-pair-1',
+    type: 'decision',
+    prompt:
+      '내 패 A♣ Q♦, 커뮤니티 카드 Q♠ 8♥ 3♣. 프리플랍에서 내가 BTN 오픈했고 BB가 콜했습니다. BB가 체크했습니다.',
+    context: '플랍, 탑페어 탑키커, 드라이 보드',
+    choices: [
+      { id: 'check', label: 'Check' },
+      { id: 'small-bet', label: '작게 Bet' },
+      { id: 'all-in', label: 'All-in' },
+    ],
+    correctChoiceId: 'small-bet',
+    explanation:
+      '좋은 탑페어지만 보드가 드라이해서 크게 몰아칠 필요는 없습니다. 작은 밸류벳으로 약한 Q, 8, 페어에게 콜을 받습니다.',
+    tags: ['flop', 'value', 'board'],
+  },
+  {
+    id: 'q-flop-cbet-dry-1',
+    type: 'decision',
+    prompt:
+      '내 패 K♣ J♣, 커뮤니티 카드 A♦ 7♠ 2♥. 내가 CO에서 오픈했고 BB만 콜했습니다. BB가 체크했습니다.',
+    context: '플랍, 에이스 하이 드라이 보드, 내게 메이드 핸드는 없음',
+    choices: [
+      { id: 'check', label: 'Check' },
+      { id: 'small-bet', label: '작게 C-bet' },
+      { id: 'large-bet', label: '크게 Bet' },
+    ],
+    correctChoiceId: 'small-bet',
+    explanation:
+      '오픈한 쪽에게 A가 많아 보이는 보드입니다. 작은 C-bet으로 폴드를 유도하되, 콜을 받으면 무리해서 계속하지 않습니다.',
+    tags: ['flop', 'c-bet', 'board'],
+  },
+  {
+    id: 'q-flop-multiway-1',
+    type: 'decision',
+    prompt:
+      '내 패 A♥ J♥, 커뮤니티 카드 J♣ 9♣ 8♦. 세 명이 플랍을 봤고 앞 두 명이 체크했습니다.',
+    context: '멀티웨이 팟, 탑페어지만 스트레이트/플러시 드로우가 많은 웻 보드',
+    choices: [
+      { id: 'check', label: 'Check' },
+      { id: 'bet', label: 'Bet' },
+      { id: 'all-in', label: 'All-in' },
+    ],
+    correctChoiceId: 'bet',
+    explanation:
+      '탑페어는 가치가 있지만 보드가 위험합니다. 체크로 공짜 카드를 주기보다 적당히 베팅해 드로우에게 비용을 내게 합니다.',
+    tags: ['flop', 'multiway', 'board'],
+  },
+  {
+    id: 'q-turn-scare-card-1',
+    type: 'decision',
+    prompt:
+      '내 패 K♠ K♦, 보드 Q♣ 7♣ 2♥ A♣. 플랍에서 내가 베팅했고 상대가 콜했습니다. 턴에 A와 세 번째 클럽이 동시에 떴습니다.',
+    context: '턴, 오버카드와 플러시 완성 가능성이 생긴 상황',
+    choices: [
+      { id: 'check', label: 'Check' },
+      { id: 'small-bet', label: '작게 Bet' },
+      { id: 'all-in', label: 'All-in' },
+    ],
+    correctChoiceId: 'check',
+    explanation:
+      'KK는 여전히 쇼다운 가치가 있지만 턴 카드가 매우 나쁩니다. 무리한 큰 베팅보다 체크로 팟을 조절합니다.',
+    tags: ['turn', 'pot-control', 'board'],
+  },
+  {
+    id: 'q-river-thin-value-1',
+    type: 'decision',
+    prompt:
+      '내 패 A♦ T♦, 보드 T♣ 6♠ 3♥ 2♣ 2♦. 상대는 체크콜을 자주 하고 블러프 레이즈는 거의 없습니다.',
+    context: '리버, 탑페어 좋은 키커, 팟은 중간 크기',
+    choices: [
+      { id: 'check', label: 'Check back' },
+      { id: 'small-bet', label: '작게 Bet' },
+      { id: 'all-in', label: 'All-in' },
+    ],
+    correctChoiceId: 'small-bet',
+    explanation:
+      '콜을 많이 하는 상대에게는 작은 밸류벳이 좋습니다. 다만 큰 올인은 더 약한 핸드를 쫓아내기 쉽습니다.',
+    tags: ['river', 'value', 'exploit'],
+  },
+  {
+    id: 'q-river-bluff-catch-1',
+    type: 'decision',
+    prompt:
+      '내 패 Q♠ Q♥, 보드 K♦ 9♣ 6♠ 4♥ 2♣. 상대가 플랍과 턴을 체크했고 리버에서 갑자기 팟 크기로 베팅했습니다.',
+    context: '리버, 원페어 쇼다운 가치 있음, 상대는 평소 패시브함',
+    choices: basicChoices,
+    correctChoiceId: 'fold',
+    explanation:
+      '패시브한 상대의 큰 리버 베팅은 대체로 강한 핸드입니다. QQ는 쇼다운 가치는 있지만 큰 베팅을 받기엔 부족합니다.',
+    tags: ['river', 'bluff-catch', 'exploit'],
+  },
+  {
+    id: 'q-outs-straight-1',
+    type: 'reading',
+    prompt:
+      '내 패 9♠ 8♠, 커뮤니티 카드 7♦ 6♣ 2♥. 턴에서 스트레이트를 완성할 직접 아웃츠는 보통 몇 장인가요?',
+    context: '플랍, OESD가 있는 상황',
+    choices: [
+      { id: '4', label: '4장' },
+      { id: '8', label: '8장' },
+      { id: '12', label: '12장' },
+    ],
+    correctChoiceId: '8',
+    explanation:
+      '5가 오면 5-6-7-8-9, T가 오면 6-7-8-9-T가 됩니다. 네 장씩 두 종류라 총 8아웃츠입니다.',
+    tags: ['outs', 'straight', 'reading'],
+  },
+  {
+    id: 'q-pot-odds-call-1',
+    type: 'decision',
+    prompt:
+      '팟이 1,000이고 상대가 500을 베팅했습니다. 나는 플러시 드로우가 있고 다음 카드 한 장을 보려 합니다.',
+    context: '턴으로 가기 전, 콜하면 총 팟은 2,000, 콜 비용은 500',
+    choices: [
+      { id: 'fold', label: '무조건 Fold' },
+      { id: 'call', label: '콜 고려' },
+      { id: 'all-in', label: '무조건 All-in' },
+    ],
+    correctChoiceId: 'call',
+    explanation:
+      '500을 내고 2,000을 노리는 구조라 필요한 승률은 약 25%입니다. 플러시 드로우는 대략 그 근처라 콜을 고려할 수 있습니다.',
+    tags: ['pot-odds', 'draw', 'turn'],
+  },
+  {
+    id: 'q-tournament-ante-steal-1',
+    type: 'decision',
+    prompt:
+      '앤티가 생긴 뒤 모두 폴드했고 나는 BTN에서 K♣ 8♣를 받았습니다. SB와 BB는 너무 자주 폴드합니다.',
+    context: '25BB, 토너먼트 중반, 블라인드와 앤티가 팟에 있음',
+    choices: basicChoices,
+    correctChoiceId: 'raise',
+    explanation:
+      '앤티가 있으면 훔칠 수 있는 팟이 커집니다. 뒤 블라인드가 타이트하면 버튼에서 넓게 스틸할 수 있습니다.',
+    tags: ['tournament', 'steal', 'exploit'],
+  },
+  {
+    id: 'q-short-stack-fold-equity-1',
+    type: 'decision',
+    prompt:
+      '내 스택은 9BB이고 CO에서 A♠ 5♠를 받았습니다. 앞은 모두 폴드했고 뒤에는 BTN/SB/BB가 남았습니다.',
+    context: '토너먼트 후반, 앤티 있음, 콜하면 스택이 어중간해짐',
+    choices: [
+      { id: 'fold', label: 'Fold' },
+      { id: 'call', label: 'Limp' },
+      { id: 'shove', label: 'All-in' },
+    ],
+    correctChoiceId: 'shove',
+    explanation:
+      '9BB에서는 작은 레이즈 후 폴드하기 어렵습니다. A5s는 폴드 에쿼티와 에이스 블로커가 있어 올인 후보입니다.',
+    tags: ['tournament', 'short-stack', 'preflop'],
+  },
+  {
+    id: 'q-big-stack-pressure-1',
+    type: 'decision',
+    prompt:
+      '나는 테이블 빅스택이고 BTN입니다. SB와 BB는 중간 스택이며 입상을 의식해 큰 충돌을 피합니다. 내 패는 Q♦ T♦입니다.',
+    context: '버블 근처, 모두 폴드 후 버튼 액션',
+    choices: basicChoices,
+    correctChoiceId: 'raise',
+    explanation:
+      '빅스택은 버블 근처에서 중간 스택을 압박할 수 있습니다. QTs는 버튼 오픈으로 충분히 좋은 핸드입니다.',
+    tags: ['tournament', 'bubble', 'position'],
+  },
+  {
+    id: 'q-tilt-control-1',
+    type: 'decision',
+    prompt:
+      '방금 배드빗을 맞고 큰 팟을 잃었습니다. 다음 핸드에 A♣ 4♦가 왔고 UTG가 오픈했습니다. “되찾아야 한다”는 생각이 듭니다.',
+    context: '50BB, 감정이 흔들린 직후, 초반 포지션 오픈 상대',
+    choices: basicChoices,
+    correctChoiceId: 'fold',
+    explanation:
+      '틸트 상태에서는 평소보다 콜을 넓히기 쉽습니다. A4o는 UTG 오픈 상대로 약하므로 감정과 무관하게 폴드합니다.',
+    tags: ['mindset', 'tilt', 'preflop'],
+  },
+  {
+    id: 'q-table-image-1',
+    type: 'decision',
+    prompt:
+      '최근 20분 동안 내가 거의 모든 팟에 참가했습니다. 이번에 HJ에서 A♠ J♣를 받고 오픈하자 BTN이 바로 3-bet했습니다.',
+    context: '45BB, 상대는 내가 루즈하다고 느낄 가능성이 큼',
+    choices: basicChoices,
+    correctChoiceId: 'call',
+    explanation:
+      '내 이미지 때문에 상대가 넓게 3-bet할 수 있습니다. AJo는 애매하지만 포지션이 나쁘지 않아 콜로 플랍을 볼 수 있습니다.',
+    tags: ['image', 'preflop', 'exploit'],
+  },
+  {
+    id: 'q-bankroll-buyin-1',
+    type: 'decision',
+    prompt:
+      '친구 토너먼트에서 리바이가 가능하고, 초반에 30BB가 남았습니다. A♦ 7♣로 큰 올인을 콜하면 지면 바로 리바이해야 합니다.',
+    context: '초반, 상대는 평소 큰 올인에 강한 핸드가 많은 편',
+    choices: basicChoices,
+    correctChoiceId: 'fold',
+    explanation:
+      '리바이가 가능해도 약한 에이스로 큰 올인을 받는 습관은 좋지 않습니다. 초보자는 좋은 자리와 강한 핸드를 기다립니다.',
+    tags: ['tournament', 'risk', 'preflop'],
+  },
 ];
 
 const quizRotation = quizzes.map((quiz) => quiz.id);
+
+export const pickRandomQuizIds = (
+  quizIds: string[],
+  count: number,
+  random = Math.random,
+) => {
+  const shuffled = [...new Set(quizIds)];
+
+  for (let index = shuffled.length - 1; index > 0; index -= 1) {
+    const swapIndex = Math.floor(random() * (index + 1));
+    [shuffled[index], shuffled[swapIndex]] = [
+      shuffled[swapIndex],
+      shuffled[index],
+    ];
+  }
+
+  return shuffled.slice(0, count);
+};
 
 export const courseUnits: CourseUnit[] = Array.from(
   { length: 28 },
@@ -296,8 +599,8 @@ export const courseUnits: CourseUnit[] = Array.from(
         ...extraLessonBlocks,
       ],
       quizIds: [
-        quizRotation[index % quizRotation.length],
-        quizRotation[(index + 4) % quizRotation.length],
+        quizRotation[(index * 2) % quizRotation.length],
+        quizRotation[(index * 2 + 1) % quizRotation.length],
       ],
     };
   },

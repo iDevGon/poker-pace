@@ -26,6 +26,9 @@ export default function App() {
   const [activeTab, setActiveTab] = useState<TabId>('today');
   const [activeUnitId, setActiveUnitId] = useState<string | null>(null);
   const [trainerUnit, setTrainerUnit] = useState<CourseUnit | null>(null);
+  const [guideTermFromQuiz, setGuideTermFromQuiz] = useState<string | null>(
+    null,
+  );
   const [progress, setProgress] = useState<ProgressState>(() => {
     if (typeof window === 'undefined') {
       return initialProgress;
@@ -50,11 +53,13 @@ export default function App() {
   const missedQuizIds = getMissedQuizIds(progress);
 
   const openLesson = (unitId: string) => {
+    setGuideTermFromQuiz(null);
     setTrainerUnit(null);
     setActiveUnitId(unitId);
   };
 
   const closeLesson = () => {
+    setGuideTermFromQuiz(null);
     setActiveUnitId(null);
     setTrainerUnit(null);
   };
@@ -85,6 +90,7 @@ export default function App() {
       ],
       quizIds,
     };
+    setGuideTermFromQuiz(null);
     setTrainerUnit(sessionUnit);
     setActiveUnitId(sessionUnit.id);
   };
@@ -99,12 +105,23 @@ export default function App() {
         className="app-shell mx-auto min-h-screen w-full max-w-md border-x border-[oklch(86%_0.018_94_/_0.1)] px-5 pb-28 pt-6"
       >
         {activeUnit ? (
-          <LessonScreen
-            unit={activeUnit}
-            onBack={closeLesson}
-            onAnswer={answerQuiz}
-            onComplete={finishUnit}
-          />
+          <>
+            <div hidden={Boolean(guideTermFromQuiz)}>
+              <LessonScreen
+                unit={activeUnit}
+                onBack={closeLesson}
+                onAnswer={answerQuiz}
+                onComplete={finishUnit}
+                onOpenGuideTerm={setGuideTermFromQuiz}
+              />
+            </div>
+            {guideTermFromQuiz ? (
+              <GuideScreen
+                targetTerm={guideTermFromQuiz}
+                onReturnToQuestion={() => setGuideTermFromQuiz(null)}
+              />
+            ) : null}
+          </>
         ) : (
           <>
             {activeTab === 'today' ? (

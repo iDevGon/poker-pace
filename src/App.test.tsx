@@ -106,6 +106,30 @@ describe('Poker Pace app', () => {
     ).toBeInTheDocument();
   });
 
+  it('links quiz terms to the guide and returns to the same question', async () => {
+    const user = userEvent.setup();
+    render(<App />);
+
+    await user.click(screen.getByRole('button', { name: /학습 시작/i }));
+    await user.click(screen.getByRole('button', { name: /퀴즈 시작/i }));
+    await user.click(screen.getByRole('button', { name: /100BB 용어 보기/i }));
+
+    expect(
+      screen.getByRole('button', { name: /문제로 돌아가기/i }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('tab', { name: /용어설명/i, selected: true }),
+    ).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: '100BB' })).toBeInTheDocument();
+
+    await user.click(screen.getByRole('button', { name: /문제로 돌아가기/i }));
+
+    expect(screen.getByText(/문제 1\/2/i)).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: /100BB 용어 보기/i }),
+    ).toBeInTheDocument();
+  });
+
   it('opens the beginner guide with searchable hand and rank references', async () => {
     const user = userEvent.setup();
     render(<App />);

@@ -1,5 +1,6 @@
 import { RotateCcw, Shuffle } from 'lucide-react';
-import { quizzes } from '../domain/course';
+import { useMemo } from 'react';
+import { pickRandomQuizIds, quizzes } from '../domain/course';
 import type { Quiz } from '../domain/types';
 
 type TrainerScreenProps = {
@@ -14,7 +15,14 @@ export function TrainerScreen({
   const missedQuizzes = missedQuizIds
     .map((quizId) => quizzes.find((quiz) => quiz.id === quizId))
     .filter((quiz): quiz is Quiz => Boolean(quiz));
-  const randomQuizIds = quizzes.slice(0, 10).map((quiz) => quiz.id);
+  const randomQuizIds = useMemo(
+    () =>
+      pickRandomQuizIds(
+        quizzes.map((quiz) => quiz.id),
+        10,
+      ),
+    [],
+  );
 
   return (
     <section className="rise-in space-y-6">

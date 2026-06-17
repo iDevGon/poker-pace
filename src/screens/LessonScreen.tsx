@@ -3,12 +3,14 @@ import { useMemo, useState } from 'react';
 import { Card } from '../components/Card';
 import { quizzes } from '../domain/course';
 import type { CourseUnit, QuizAnswerRecord } from '../domain/types';
+import { guideEntries } from './GuideScreen';
 
 type LessonScreenProps = {
   unit: CourseUnit;
   onBack: () => void;
   onAnswer: (answer: QuizAnswerRecord) => void;
   onComplete: (unitId: string) => void;
+  onOpenGuideTerm?: (term: string) => void;
 };
 
 const quizTypeLabels = {
@@ -19,6 +21,26 @@ const quizTypeLabels = {
 const cardTokenPattern = /[AKQJT98765432][♠♥♦♣]/g;
 const cardSequencePattern =
   /[AKQJT98765432][♠♥♦♣](?:\s+[AKQJT98765432][♠♥♦♣])*/;
+const skippedGuideLabels = new Set(['s', 'o', 't', 'aa', 'kk', '77']);
+
+const guideLinkCandidates = guideEntries
+  .filter((entry) => entry.category !== '족보')
+  .flatMap((entry) =>
+    [entry.term, ...entry.aliases].map((label) => ({
+      label,
+      normalizedLabel: label.toLocaleLowerCase(),
+      term: entry.term,
+    })),
+  )
+  .filter(
+    (candidate, index, candidates) =>
+      candidate.label.length >= 2 &&
+      !skippedGuideLabels.has(candidate.normalizedLabel) &&
+      candidates.findIndex(
+        (other) => other.normalizedLabel === candidate.normalizedLabel,
+      ) === index,
+  )
+  .sort((first, second) => second.label.length - first.label.length);
 
 type CardGroup = {
   label: '내 패' | '커뮤니티 카드' | '카드';
@@ -68,6 +90,111 @@ type CardGroupsProps = {
   sourceLabel: '문제' | '해설';
 };
 
+type GuideMatch = {
+  index: number;
+  label: string;
+  term: string;
+};
+
+const isTokenChar = (value: string) => /[\p{L}\p{N}]/u.test(value);
+
+const hasGuideTermBoundary = (text: string, index: number, length: number) => {
+  const before = text[index - 1];
+  const after = text[index + length];
+
+  return (!before || !isTokenChar(before)) && (!after || !isTokenChar(after));
+};
+
+const findNextGuideMatch = (text: string): GuideMatch | null => {
+  const normalizedText = text.toLocaleLowerCase();
+
+  return guideLinkCandidates.reduce<GuideMatch | null>((current, candidate) => {
+    let index = normalizedText.indexOf(candidate.normalizedLabel);
+
+    while (
+      index !== -1 &&
+      !hasGuideTermBoundary(text, index, candidate.label.length)
+    ) {
+      index = normalizedText.indexOf(candidate.normalizedLabel, index + 1);
+    }
+
+    if (index === -1) {
+      return current;
+    }
+
+    if (
+      !current ||
+      index < current.index ||
+      (index === current.index && candidate.label.length > current.label.length)
+    ) {
+      return {
+        index,
+        label: text.slice(index, index + candidate.label.length),
+        term: candidate.term,
+      };
+    }
+
+    return current;
+  }, null);
+};
+
+function TextWithGuideLinks({
+  text,
+  onOpenGuideTerm,
+}: {
+  text: string;
+  onOpenGuideTerm?: (term: string) => void;
+}) {
+  if (!onOpenGuideTerm) {
+    return text;
+  }
+
+  const segments: Array<
+    | { type: 'text'; value: string }
+    | { type: 'term'; value: string; term: string }
+  > = [];
+  let remainingText = text;
+
+  while (remainingText.length > 0) {
+    const match = findNextGuideMatch(remainingText);
+
+    if (!match) {
+      segments.push({ type: 'text', value: remainingText });
+      break;
+    }
+
+    if (match.index > 0) {
+      segments.push({
+        type: 'text',
+        value: remainingText.slice(0, match.index),
+      });
+    }
+
+    segments.push({ type: 'term', value: match.label, term: match.term });
+    remainingText = remainingText.slice(match.index + match.label.length);
+  }
+
+  return (
+    <>
+      {segments.map((segment, index) =>
+        segment.type === 'text' ? (
+          <span key={`${segment.value}-${index}`}>{segment.value}</span>
+        ) : (
+          <button
+            key={`${segment.term}-${segment.value}-${index}`}
+            type="button"
+            aria-label={`${segment.value} 용어 보기`}
+            onClick={() => onOpenGuideTerm(segment.term)}
+            className="inline rounded-[0.35rem] px-1 font-black text-[var(--mint-400)] underline decoration-[var(--mint-400)]/50 underline-offset-4 transition hover:bg-[oklch(86%_0.018_94_/_0.08)]"
+          >
+            {segment.value}
+          </button>
+        ),
+      )}
+    </>
+  );
+}
+
 function CardGroups({ groups, sourceLabel }: CardGroupsProps) {
   if (groups.length === 0) {
     return null;
@@ -100,6 +227,7 @@ export function LessonScreen({
   onBack,
   onAnswer,
   onComplete,
+  onOpenGuideTerm,
 }: LessonScreenProps) {
   const [phase, setPhase] = useState<'lesson' | 'quiz' | 'done'>('lesson');
   const [quizIndex, setQuizIndex] = useState(0);
@@ -202,10 +330,16 @@ export function LessonScreen({
             </span>
           </div>
           <p className="relative mt-6 text-sm font-bold leading-7 text-[var(--ink-300)]">
-            {quiz.context}
+            <TextWithGuideLinks
+              text={quiz.context}
+              onOpenGuideTerm={onOpenGuideTerm}
+            />
           </p>
           <h2 className="font-display relative mt-2 text-xl font-bold leading-8">
-            {quiz.prompt}
+            <TextWithGuideLinks
+              text={quiz.prompt}
+              onOpenGuideTerm={onOpenGuideTerm}
+            />
           </h2>
           <CardGroups groups={promptCardGroups} sourceLabel="문제" />
           <fieldset
@@ -248,7 +382,10 @@ export function LessonScreen({
             >
               <p className="eyebrow">해설</p>
               <p className="mt-2 text-sm leading-7 text-[var(--ink-200)]">
-                {quiz.explanation}
+                <TextWithGuideLinks
+                  text={quiz.explanation}
+                  onOpenGuideTerm={onOpenGuideTerm}
+                />
               </p>
               <section aria-label="해설 카드 예시">
                 <CardGroups groups={explanationCardGroups} sourceLabel="해설" />

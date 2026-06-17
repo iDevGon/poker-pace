@@ -1,8 +1,8 @@
-import { Search } from 'lucide-react';
-import { useMemo, useState } from 'react';
+import { ArrowLeft, Search } from 'lucide-react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Card } from '../components/Card';
 
-type GuideEntry = {
+export type GuideEntry = {
   term: string;
   english?: string;
   category: string;
@@ -14,7 +14,7 @@ type GuideEntry = {
 
 type GuideTab = 'hands' | 'terms';
 
-const entries: GuideEntry[] = [
+export const guideEntries: GuideEntry[] = [
   {
     term: '로열 플러시',
     english: 'Royal Flush',
@@ -812,9 +812,24 @@ function matchesEntry(entry: GuideEntry, query: string) {
   return text.includes(query);
 }
 
-function EntryCard({ entry }: { entry: GuideEntry }) {
+function EntryCard({
+  entry,
+  highlighted,
+  refCallback,
+}: {
+  entry: GuideEntry;
+  highlighted?: boolean;
+  refCallback?: (element: HTMLElement | null) => void;
+}) {
   return (
-    <article className="surface rounded-[1rem] p-4">
+    <article
+      ref={refCallback}
+      className={`surface rounded-[1rem] p-4 transition ${
+        highlighted
+          ? 'ring-2 ring-[var(--mint-400)] ring-offset-2 ring-offset-[var(--felt-950)]'
+          : ''
+      }`}
+    >
       <div className="flex items-start justify-between gap-3">
         <div>
           <h3 className="font-display text-lg font-bold">{entry.term}</h3>
@@ -847,13 +862,27 @@ function EntryCard({ entry }: { entry: GuideEntry }) {
   );
 }
 
-export function GuideScreen() {
+type GuideScreenProps = {
+  targetTerm?: string | null;
+  onReturnToQuestion?: () => void;
+};
+
+export function GuideScreen({
+  targetTerm = null,
+  onReturnToQuestion,
+}: GuideScreenProps) {
   const [query, setQuery] = useState('');
-  const [activeTab, setActiveTab] = useState<GuideTab>('hands');
+  const [activeTab, setActiveTab] = useState<GuideTab>(
+    targetTerm ? 'terms' : 'hands',
+  );
+  const entryRefs = useRef(new Map<string, HTMLElement>());
   const normalizedQuery = normalize(query);
   const tabCategories = categoriesByTab[activeTab];
+  const targetEntry = targetTerm
+    ? guideEntries.find((entry) => entry.term === targetTerm)
+    : undefined;
   const visibleEntries = useMemo(() => {
-    const tabEntries = entries.filter((entry) =>
+    const tabEntries = guideEntries.filter((entry) =>
       tabCategories.includes(entry.category),
     );
 
@@ -864,9 +893,37 @@ export function GuideScreen() {
     return tabEntries.filter((entry) => matchesEntry(entry, normalizedQuery));
   }, [normalizedQuery, tabCategories]);
 
+  useEffect(() => {
+    if (!targetEntry) {
+      return;
+    }
+
+    setActiveTab('terms');
+    setQuery('');
+  }, [targetEntry]);
+
+  useEffect(() => {
+    if (!targetEntry || activeTab !== 'terms' || normalizedQuery) {
+      return;
+    }
+
+    const element = entryRefs.current.get(targetEntry.term);
+    element?.scrollIntoView?.({ block: 'center', behavior: 'smooth' });
+  }, [activeTab, normalizedQuery, targetEntry]);
+
   return (
     <section className="rise-in space-y-6">
       <div>
+        {onReturnToQuestion ? (
+          <button
+            type="button"
+            onClick={onReturnToQuestion}
+            className="chip mb-5 flex items-center gap-2 px-3 py-2 text-sm font-bold transition hover:bg-[oklch(86%_0.018_94_/_0.06)]"
+          >
+            <ArrowLeft aria-hidden="true" className="size-4" />
+            문제로 돌아가기
+          </button>
+        ) : null}
         <p className="eyebrow">Beginner Guide</p>
         <h1 className="font-display mt-3 text-[2rem] font-bold leading-tight">
           홀덤 가이드
@@ -935,6 +992,14 @@ export function GuideScreen() {
               <EntryCard
                 key={`${entry.category}-${entry.term}`}
                 entry={entry}
+                highlighted={entry.term === targetEntry?.term}
+                refCallback={(element) => {
+                  if (element) {
+                    entryRefs.current.set(entry.term, element);
+                  } else {
+                    entryRefs.current.delete(entry.term);
+                  }
+                }}
               />
             ))
           ) : (
@@ -967,6 +1032,14 @@ export function GuideScreen() {
                   <EntryCard
                     key={`${entry.category}-${entry.term}`}
                     entry={entry}
+                    highlighted={entry.term === targetEntry?.term}
+                    refCallback={(element) => {
+                      if (element) {
+                        entryRefs.current.set(entry.term, element);
+                      } else {
+                        entryRefs.current.delete(entry.term);
+                      }
+                    }}
                   />
                 ))}
               </div>
