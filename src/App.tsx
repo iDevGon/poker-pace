@@ -4,19 +4,28 @@ import { courseUnits } from './domain/course';
 import {
   completeUnit,
   getCompletionPercent,
+  getMissedQuizIds,
   getNextRecommendedUnit,
   initialProgress,
   recordQuizAnswer,
+  toggleChecklistItem,
 } from './domain/progress';
 import { loadProgress, saveProgress } from './domain/storage';
-import type { ProgressState, QuizAnswerRecord } from './domain/types';
+import type {
+  CourseUnit,
+  ProgressState,
+  QuizAnswerRecord,
+} from './domain/types';
 import { CourseScreen } from './screens/CourseScreen';
 import { LessonScreen } from './screens/LessonScreen';
 import { TodayScreen } from './screens/TodayScreen';
+import { TournamentScreen } from './screens/TournamentScreen';
+import { TrainerScreen } from './screens/TrainerScreen';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<TabId>('today');
   const [activeUnitId, setActiveUnitId] = useState<string | null>(null);
+  const [trainerUnit, setTrainerUnit] = useState<CourseUnit | null>(null);
   const [progress, setProgress] = useState<ProgressState>(() => {
     if (typeof window === 'undefined') {
       return initialProgress;
@@ -32,17 +41,22 @@ export default function App() {
     () => getNextRecommendedUnit(courseUnits, progress),
     [progress],
   );
-  const activeUnit = activeUnitId
-    ? (courseUnits.find((unit) => unit.id === activeUnitId) ?? null)
-    : null;
+  const activeUnit =
+    trainerUnit ??
+    (activeUnitId
+      ? (courseUnits.find((unit) => unit.id === activeUnitId) ?? null)
+      : null);
   const completionPercent = getCompletionPercent(courseUnits, progress);
+  const missedQuizIds = getMissedQuizIds(progress);
 
   const openLesson = (unitId: string) => {
+    setTrainerUnit(null);
     setActiveUnitId(unitId);
   };
 
   const closeLesson = () => {
     setActiveUnitId(null);
+    setTrainerUnit(null);
   };
 
   const answerQuiz = (answer: QuizAnswerRecord) => {
@@ -50,7 +64,33 @@ export default function App() {
   };
 
   const finishUnit = (unitId: string) => {
-    setProgress((current) => completeUnit(current, unitId));
+    if (unitId !== 'trainer-session') {
+      setProgress((current) => completeUnit(current, unitId));
+    }
+  };
+
+  const toggleTournamentItem = (itemId: string) => {
+    setProgress((current) => toggleChecklistItem(current, itemId));
+  };
+
+  const startTrainerQuiz = (quizIds: string[]) => {
+    const sessionUnit: CourseUnit = {
+      id: 'trainer-session',
+      week: 0,
+      day: 0,
+      title: quizIds.length === 1 ? '틀린 문제 복습' : '랜덤 10문제',
+      goal: '빠르게 판단하고 해설로 기준을 확인합니다.',
+      estimatedMinutes: quizIds.length === 1 ? 2 : 10,
+      lessonBlocks: [
+        {
+          heading: 'Trainer',
+          body: '이번 세션은 레슨 없이 바로 퀴즈로 들어갑니다. 선택 후 해설을 보고 기준을 정리하세요.',
+        },
+      ],
+      quizIds,
+    };
+    setTrainerUnit(sessionUnit);
+    setActiveUnitId(sessionUnit.id);
   };
 
   return (
@@ -83,28 +123,16 @@ export default function App() {
               />
             ) : null}
             {activeTab === 'trainer' ? (
-              <section>
-                <p className="text-sm font-bold uppercase tracking-[0.28em] text-emerald-300">
-                  Trainer
-                </p>
-                <h1 className="mt-3 text-3xl font-black">퀴즈 복습</h1>
-                <p className="mt-2 text-sm leading-6 text-stone-300">
-                  틀린 문제와 랜덤 퀴즈는 다음 단계에서 연결합니다.
-                </p>
-              </section>
+              <TrainerScreen
+                missedQuizIds={missedQuizIds}
+                onStartQuiz={startTrainerQuiz}
+              />
             ) : null}
             {activeTab === 'tournament' ? (
-              <section>
-                <p className="text-sm font-bold uppercase tracking-[0.28em] text-emerald-300">
-                  Tournament
-                </p>
-                <h1 className="mt-3 text-3xl font-black">
-                  친구 대회 체크리스트
-                </h1>
-                <p className="mt-2 text-sm leading-6 text-stone-300">
-                  대회 규칙 체크리스트는 다음 단계에서 연결합니다.
-                </p>
-              </section>
+              <TournamentScreen
+                checklist={progress.tournamentChecklist}
+                onToggleItem={toggleTournamentItem}
+              />
             ) : null}
           </>
         )}

@@ -27,4 +27,32 @@ describe('Poker Pace app', () => {
 
     expect(screen.getByText(/explanation/i)).toBeInTheDocument();
   });
+
+  it('persists tournament checklist selections after reload', async () => {
+    const user = userEvent.setup();
+    const { unmount } = render(<App />);
+
+    await user.click(screen.getByRole('button', { name: /tournament/i }));
+    await user.click(screen.getByRole('checkbox', { name: /starting chips/i }));
+    unmount();
+
+    render(<App />);
+    await user.click(screen.getByRole('button', { name: /tournament/i }));
+
+    expect(
+      screen.getByRole('checkbox', { name: /starting chips/i }),
+    ).toBeChecked();
+  });
+
+  it('shows an empty missed-question trainer state', async () => {
+    const user = userEvent.setup();
+    render(<App />);
+
+    await user.click(screen.getByRole('button', { name: /trainer/i }));
+
+    expect(screen.getByText(/No missed questions yet/i)).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: /random 10 questions/i }),
+    ).toBeInTheDocument();
+  });
 });
