@@ -1,7 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { beforeEach, describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import App from './App';
+import { LessonScreen } from './screens/LessonScreen';
 
 describe('Poker Pace app', () => {
   beforeEach(() => {
@@ -57,6 +58,40 @@ describe('Poker Pace app', () => {
     const explanationCards = screen.getByLabelText('해설 카드 예시');
     expect(explanationCards).toHaveTextContent('7♣');
     expect(explanationCards).toHaveTextContent('2♦');
+  });
+
+  it('separates hole cards from community cards in quiz card visuals', async () => {
+    const user = userEvent.setup();
+    render(
+      <LessonScreen
+        unit={{
+          id: 'test-unit',
+          week: 1,
+          day: 1,
+          title: '카드 구분',
+          goal: '내 패와 커뮤니티 카드를 구분합니다.',
+          estimatedMinutes: 1,
+          lessonBlocks: [],
+          quizIds: ['q-hand-rank-1'],
+        }}
+        onBack={vi.fn()}
+        onAnswer={vi.fn()}
+        onComplete={vi.fn()}
+      />,
+    );
+
+    await user.click(screen.getByRole('button', { name: /퀴즈 시작/i }));
+
+    const holeCards = screen.getByLabelText('문제 내 패 카드');
+    const communityCards = screen.getByLabelText('문제 커뮤니티 카드');
+
+    expect(holeCards).toHaveTextContent('A♠');
+    expect(holeCards).toHaveTextContent('K♠');
+    expect(communityCards).toHaveTextContent('A♦');
+    expect(communityCards).toHaveTextContent('9♣');
+    expect(communityCards).toHaveTextContent('4♥');
+    expect(communityCards).toHaveTextContent('2♠');
+    expect(communityCards).toHaveTextContent('2♣');
   });
 
   it('shows an empty missed-question trainer state', async () => {

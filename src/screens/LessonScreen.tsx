@@ -17,8 +17,83 @@ const quizTypeLabels = {
 } as const;
 
 const cardTokenPattern = /[AKQJT98765432][♠♥♦♣]/g;
+const cardSequencePattern =
+  /[AKQJT98765432][♠♥♦♣](?:\s+[AKQJT98765432][♠♥♦♣])*/;
+
+type CardGroup = {
+  label: '내 패' | '커뮤니티 카드' | '카드';
+  cards: string[];
+};
 
 const getCardTokens = (text: string) => text.match(cardTokenPattern) ?? [];
+
+const getCardGroup = (
+  text: string,
+  label: '내 패' | '커뮤니티 카드',
+  pattern: RegExp,
+): CardGroup | null => {
+  const match = text.match(pattern);
+  const cards = match ? getCardTokens(match[1]) : [];
+
+  return cards.length > 0 ? { label, cards } : null;
+};
+
+const isCardGroup = (group: CardGroup | null): group is CardGroup =>
+  group !== null;
+
+const getCardGroups = (text: string): CardGroup[] => {
+  const holeCards = getCardGroup(
+    text,
+    '내 패',
+    new RegExp(`내 패(?:는)?\\s*(${cardSequencePattern.source})`),
+  );
+  const communityCards = getCardGroup(
+    text,
+    '커뮤니티 카드',
+    new RegExp(`(?:커뮤니티 카드|보드)\\s*(${cardSequencePattern.source})`),
+  );
+  const groupedCards = [holeCards, communityCards].filter(isCardGroup);
+
+  if (groupedCards.length > 0) {
+    return groupedCards;
+  }
+
+  const cards = getCardTokens(text);
+
+  return cards.length > 0 ? [{ label: '카드', cards }] : [];
+};
+
+type CardGroupsProps = {
+  groups: CardGroup[];
+  sourceLabel: '문제' | '해설';
+};
+
+function CardGroups({ groups, sourceLabel }: CardGroupsProps) {
+  if (groups.length === 0) {
+    return null;
+  }
+
+  return (
+    <div className="relative mt-4 space-y-3">
+      {groups.map((group) => (
+        <section
+          key={`${sourceLabel}-${group.label}`}
+          aria-label={`${sourceLabel} ${group.label}${group.label.endsWith('카드') ? '' : ' 카드'}`}
+          className="rounded-[0.8rem] border border-[oklch(86%_0.018_94_/_0.1)] bg-[oklch(9%_0.016_165_/_0.38)] p-3"
+        >
+          <p className="mb-2 text-[0.68rem] font-black uppercase tracking-[0.12em] text-[var(--clay-300)]">
+            {group.label}
+          </p>
+          <div className="flex flex-wrap gap-2">
+            {group.cards.map((token, index) => (
+              <Card key={`${group.label}-${token}-${index}`} value={token} />
+            ))}
+          </div>
+        </section>
+      ))}
+    </div>
+  );
+}
 
 export function LessonScreen({
   unit,
@@ -37,9 +112,9 @@ export function LessonScreen({
     [unit.quizIds],
   );
   const quiz = unitQuizzes[quizIndex];
-  const promptCards = quiz ? getCardTokens(quiz.prompt) : [];
-  const explanationCards = quiz
-    ? getCardTokens(`${quiz.prompt} ${quiz.explanation}`)
+  const promptCardGroups = quiz ? getCardGroups(quiz.prompt) : [];
+  const explanationCardGroups = quiz
+    ? getCardGroups(`${quiz.prompt} ${quiz.explanation}`)
     : [];
 
   const finishAnswer = (choiceId: string) => {
@@ -132,13 +207,7 @@ export function LessonScreen({
           <h2 className="font-display relative mt-2 text-xl font-bold leading-8">
             {quiz.prompt}
           </h2>
-          {promptCards.length > 0 ? (
-            <div className="relative mt-4 flex flex-wrap gap-2">
-              {promptCards.map((token, index) => (
-                <Card key={`${token}-${index}`} value={token} />
-              ))}
-            </div>
-          ) : null}
+          <CardGroups groups={promptCardGroups} sourceLabel="문제" />
           <fieldset
             aria-label="퀴즈 선택지"
             className="relative mt-6 space-y-2"
@@ -181,16 +250,9 @@ export function LessonScreen({
               <p className="mt-2 text-sm leading-7 text-[var(--ink-200)]">
                 {quiz.explanation}
               </p>
-              {explanationCards.length > 0 ? (
-                <fieldset
-                  aria-label="해설 카드 예시"
-                  className="mt-4 flex flex-wrap gap-2"
-                >
-                  {explanationCards.map((token, index) => (
-                    <Card key={`${token}-${index}`} value={token} />
-                  ))}
-                </fieldset>
-              ) : null}
+              <section aria-label="해설 카드 예시">
+                <CardGroups groups={explanationCardGroups} sourceLabel="해설" />
+              </section>
               <button
                 type="button"
                 onClick={nextQuiz}

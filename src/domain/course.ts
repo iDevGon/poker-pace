@@ -22,7 +22,7 @@ export const quizzes: Quiz[] = [
   {
     id: 'q-hand-rank-1',
     type: 'reading',
-    prompt: '내 패 A♠ K♠, 보드 A♦ 9♣ 4♥ 2♠ 2♣. 현재 내 주요 족보는?',
+    prompt: '내 패 A♠ K♠, 커뮤니티 카드 A♦ 9♣ 4♥ 2♠ 2♣. 현재 내 주요 족보는?',
     context: '리버 쇼다운 직전',
     choices: [
       { id: 'top-pair', label: '탑페어' },
@@ -30,7 +30,8 @@ export const quizzes: Quiz[] = [
       { id: 'full-house', label: '풀하우스' },
     ],
     correctChoiceId: 'two-pair',
-    explanation: 'A 한 쌍과 보드의 2 한 쌍을 함께 쓰므로 투페어입니다.',
+    explanation:
+      'A 한 쌍과 커뮤니티 카드의 2 한 쌍을 함께 쓰므로 투페어입니다.',
     tags: ['rank', 'reading'],
   },
   {
@@ -71,7 +72,7 @@ export const quizzes: Quiz[] = [
   {
     id: 'q-board-texture-1',
     type: 'reading',
-    prompt: '보드 J♠ T♠ 9♦는 어떤 보드에 가깝나요?',
+    prompt: '커뮤니티 카드 J♠ T♠ 9♦는 어떤 보드에 가깝나요?',
     context: '플랍 텍스처 판단',
     choices: [
       { id: 'dry', label: '드라이 보드' },
@@ -87,7 +88,7 @@ export const quizzes: Quiz[] = [
     id: 'q-outs-flush-1',
     type: 'reading',
     prompt:
-      '내 패 A♠ 7♠, 보드 K♠ 9♠ 2♦. 플러시를 완성할 남은 스페이드는 보통 몇 장으로 봅니까?',
+      '내 패 A♠ 7♠, 커뮤니티 카드 K♠ 9♠ 2♦. 플러시를 완성할 남은 스페이드는 보통 몇 장으로 봅니까?',
     context: '플랍에서 넛 플러시 드로우',
     choices: [
       { id: '6', label: '6 아웃츠' },
@@ -96,7 +97,7 @@ export const quizzes: Quiz[] = [
     ],
     correctChoiceId: '9',
     explanation:
-      '스페이드는 모두 13장입니다. 내 패 2장과 보드 2장이 보였으니 남은 스페이드는 9장입니다.',
+      '스페이드는 모두 13장입니다. 내 패 2장과 커뮤니티 카드 2장이 보였으니 남은 스페이드는 9장입니다.',
     tags: ['outs', 'flush'],
   },
   {
@@ -142,7 +143,7 @@ export const quizzes: Quiz[] = [
   {
     id: 'q-final-review-1',
     type: 'reading',
-    prompt: '내 패 Q♥ J♥, 보드 T♥ 9♥ 2♣. 내 핸드의 핵심 강점은?',
+    prompt: '내 패 Q♥ J♥, 커뮤니티 카드 T♥ 9♥ 2♣. 내 핸드의 핵심 강점은?',
     context: '플랍에서 강한 콤보 드로우',
     choices: [
       { id: 'nothing', label: '아무것도 없음' },
@@ -156,7 +157,7 @@ export const quizzes: Quiz[] = [
   {
     id: 'q-showdown-1',
     type: 'reading',
-    prompt: '내 패 8♣ 8♦, 보드 8♠ K♣ K♦ 3♥ 2♠. 현재 족보는?',
+    prompt: '내 패 8♣ 8♦, 커뮤니티 카드 8♠ K♣ K♦ 3♥ 2♠. 현재 족보는?',
     context: '리버 쇼다운',
     choices: [
       { id: 'trips', label: '트립스' },
