@@ -20,12 +20,12 @@ export function TodayScreen({
   if (!unit) {
     return (
       <section className="surface rise-in rounded-[1.1rem] p-6">
-        <p className="eyebrow">Complete</p>
+        <p className="eyebrow">완료</p>
         <h1 className="font-display mt-4 text-3xl font-black">
           28개 학습을 모두 끝냈습니다.
         </h1>
         <p className="mt-3 text-sm leading-7 text-[var(--ink-300)]">
-          Trainer에서 틀린 문제를 반복하면 대회 전 감각을 유지하기 좋습니다.
+          복습에서 틀린 문제를 반복하면 대회 전 감각을 유지하기 좋습니다.
         </p>
       </section>
     );
@@ -46,10 +46,10 @@ export function TodayScreen({
       <div className="table-panel rounded-[1.2rem] p-5">
         <div className="relative flex items-center justify-between gap-3">
           <p className="eyebrow">
-            Week {unit.week} Day {unit.day}
+            {unit.week}주차 {unit.day}일차
           </p>
           <span className="chip px-2.5 py-1 text-xs font-bold">
-            {unit.estimatedMinutes} min
+            {unit.estimatedMinutes}분
           </span>
         </div>
         <h2 className="font-display relative mt-6 text-2xl font-bold">
@@ -60,17 +60,17 @@ export function TodayScreen({
         </p>
         <dl className="relative mt-6 grid grid-cols-3 gap-2 text-center text-xs font-bold text-[var(--ink-300)]">
           <div className="border-y border-[oklch(86%_0.018_94_/_0.11)] py-3">
-            <dt>Lesson</dt>
-            <dd className="mt-1 text-[var(--mint-400)]">short</dd>
+            <dt>레슨</dt>
+            <dd className="mt-1 text-[var(--mint-400)]">짧게</dd>
           </div>
           <div className="border-y border-[oklch(86%_0.018_94_/_0.11)] py-3">
-            <dt>Quiz</dt>
+            <dt>퀴즈</dt>
             <dd className="mt-1 text-[var(--mint-400)]">
               {unit.quizIds.length}
             </dd>
           </div>
           <div className="border-y border-[oklch(86%_0.018_94_/_0.11)] py-3">
-            <dt>Course</dt>
+            <dt>코스</dt>
             <dd className="mt-1 text-[var(--mint-400)]">
               {completedCount}/{totalCount}
             </dd>
@@ -81,7 +81,7 @@ export function TodayScreen({
           onClick={() => onStartLesson(unit.id)}
           className="primary-action relative mt-6 flex min-h-14 w-full items-center justify-center gap-2 rounded-[0.85rem] px-4 text-sm font-black uppercase tracking-[0.12em] transition duration-200 hover:brightness-105 active:translate-y-px"
         >
-          Start lesson
+          학습 시작
           <ArrowRight aria-hidden="true" className="size-5" />
         </button>
       </div>

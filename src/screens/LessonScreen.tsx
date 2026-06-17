@@ -11,6 +11,11 @@ type LessonScreenProps = {
   onComplete: (unitId: string) => void;
 };
 
+const quizTypeLabels = {
+  decision: '판단',
+  reading: '읽기',
+} as const;
+
 export function LessonScreen({
   unit,
   onBack,
@@ -60,12 +65,12 @@ export function LessonScreen({
         className="chip flex items-center gap-2 px-3 py-2 text-sm font-bold transition hover:bg-[oklch(86%_0.018_94_/_0.06)]"
       >
         <ArrowLeft aria-hidden="true" className="size-4" />
-        Back
+        뒤로
       </button>
 
       <div>
         <p className="eyebrow">
-          Week {unit.week} Day {unit.day}
+          {unit.week}주차 {unit.day}일차
         </p>
         <h1 className="font-display mt-3 text-[2rem] font-bold leading-tight">
           {unit.title}
@@ -95,7 +100,7 @@ export function LessonScreen({
             onClick={() => setPhase('quiz')}
             className="primary-action min-h-14 w-full rounded-[0.85rem] px-4 text-sm font-black uppercase tracking-[0.12em] transition hover:brightness-105 active:translate-y-px"
           >
-            Begin quiz
+            퀴즈 시작
           </button>
         </div>
       ) : null}
@@ -107,10 +112,10 @@ export function LessonScreen({
         >
           <div className="flex items-center justify-between gap-3">
             <span className="chip relative px-3 py-1 text-xs font-bold">
-              Question {quizIndex + 1}/{unitQuizzes.length}
+              문제 {quizIndex + 1}/{unitQuizzes.length}
             </span>
             <span className="chip relative px-3 py-1 text-xs font-bold text-[var(--mint-400)]">
-              {quiz.type}
+              {quizTypeLabels[quiz.type]}
             </span>
           </div>
           <p className="relative mt-6 text-sm font-bold leading-7 text-[var(--ink-300)]">
@@ -128,7 +133,7 @@ export function LessonScreen({
               ))}
           </div>
           <fieldset
-            aria-label="Quiz choices"
+            aria-label="퀴즈 선택지"
             className="relative mt-6 space-y-2"
           >
             {quiz.choices.map((choice) => {
@@ -165,7 +170,7 @@ export function LessonScreen({
               aria-live="polite"
               className="surface relative mt-5 rounded-[0.95rem] p-4"
             >
-              <p className="eyebrow">Explanation</p>
+              <p className="eyebrow">해설</p>
               <p className="mt-2 text-sm leading-7 text-[var(--ink-200)]">
                 {quiz.explanation}
               </p>
@@ -175,8 +180,8 @@ export function LessonScreen({
                 className="mt-4 min-h-12 w-full rounded-[0.75rem] bg-[var(--ink-100)] px-4 text-sm font-black text-[var(--felt-950)] transition hover:brightness-95 active:translate-y-px"
               >
                 {quizIndex + 1 >= unitQuizzes.length
-                  ? 'Complete unit'
-                  : 'Next question'}
+                  ? '학습 완료'
+                  : '다음 문제'}
               </button>
             </div>
           ) : null}
@@ -185,7 +190,7 @@ export function LessonScreen({
 
       {phase === 'done' ? (
         <div className="surface rounded-[1.1rem] p-6">
-          <p className="eyebrow">Unit complete</p>
+          <p className="eyebrow">학습 완료</p>
           <h2 className="font-display mt-3 text-2xl font-bold leading-tight">
             좋습니다. 바로 다음 학습으로 이어갈 수 있습니다.
           </h2>
@@ -194,7 +199,7 @@ export function LessonScreen({
             onClick={onBack}
             className="primary-action mt-5 min-h-12 w-full rounded-[0.75rem] px-4 text-sm font-black uppercase tracking-[0.12em]"
           >
-            Continue
+            이어가기
           </button>
         </div>
       ) : null}

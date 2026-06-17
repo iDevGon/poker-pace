@@ -7,7 +7,7 @@ type ProgressRingProps = {
 export function ProgressRing({ percent }: ProgressRingProps) {
   return (
     <div
-      aria-label="Course progress"
+      aria-label="코스 진행률"
       aria-valuemax={100}
       aria-valuemin={0}
       aria-valuenow={percent}
@@ -20,7 +20,7 @@ export function ProgressRing({ percent }: ProgressRingProps) {
           {percent}%
         </div>
         <div className="text-[10px] font-bold uppercase tracking-widest text-[var(--ink-300)]">
-          done
+          완료
         </div>
       </div>
     </div>

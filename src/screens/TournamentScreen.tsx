@@ -17,7 +17,7 @@ export function TournamentScreen({
   return (
     <section className="rise-in space-y-6">
       <div>
-        <p className="eyebrow">Tournament</p>
+        <p className="eyebrow">대회</p>
         <h1 className="font-display mt-3 text-[2rem] font-bold leading-tight">
           친구 대회 체크리스트
         </h1>
@@ -35,7 +35,7 @@ export function TournamentScreen({
           />
           <div className="relative">
             <p className="font-display text-sm font-bold text-[var(--clay-300)]">
-              {doneCount}/{tournamentChecklistItems.length} decided
+              {doneCount}/{tournamentChecklistItems.length}개 결정
             </p>
             <p className="text-xs font-bold text-[var(--ink-300)]">
               룰은 시작 전에 정해야 게임 중 말이 줄어듭니다.

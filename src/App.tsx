@@ -84,7 +84,7 @@ export default function App() {
       estimatedMinutes: quizIds.length === 1 ? 2 : 10,
       lessonBlocks: [
         {
-          heading: 'Trainer',
+          heading: '복습',
           body: '이번 세션은 레슨 없이 바로 퀴즈로 들어갑니다. 선택 후 해설을 보고 기준을 정리하세요.',
         },
       ],
@@ -97,7 +97,7 @@ export default function App() {
   return (
     <main className="min-h-screen text-[var(--ink-100)]">
       <a href="#main-content" className="skip-link">
-        Skip to content
+        본문으로 건너뛰기
       </a>
       <div
         id="main-content"

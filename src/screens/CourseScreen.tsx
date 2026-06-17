@@ -19,7 +19,7 @@ export function CourseScreen({
   return (
     <section className="rise-in space-y-6">
       <div>
-        <p className="eyebrow">Course</p>
+        <p className="eyebrow">코스</p>
         <h1 className="font-display mt-3 text-[2rem] font-bold leading-tight">
           4주 로드맵
         </h1>
@@ -36,7 +36,7 @@ export function CourseScreen({
           className="surface rounded-[1.1rem] p-4"
         >
           <h2 id={`week-${week}-heading`} className="eyebrow">
-            Week {week}
+            {week}주차
           </h2>
           <ul className="mt-4 space-y-2">
             {units
@@ -49,9 +49,9 @@ export function CourseScreen({
                   <li key={unit.id}>
                     <button
                       type="button"
-                      aria-label={`${unit.title}, Week ${unit.week} Day ${unit.day}${
-                        complete ? ', completed' : ''
-                      }${recommended ? ', recommended next' : ''}`}
+                      aria-label={`${unit.title}, ${unit.week}주차 ${unit.day}일차${
+                        complete ? ', 완료' : ''
+                      }${recommended ? ', 다음 추천' : ''}`}
                       onClick={() => onOpenUnit(unit.id)}
                       className={`flex w-full items-center gap-3 rounded-[0.8rem] border p-3 text-left transition duration-200 active:translate-y-px ${
                         recommended
@@ -72,7 +72,7 @@ export function CourseScreen({
                       )}
                       <div className="min-w-0 flex-1">
                         <p className="font-display text-xs font-bold uppercase tracking-widest text-[var(--ink-300)]">
-                          Day {unit.day}
+                          {unit.day}일차
                         </p>
                         <p className="truncate text-sm font-black text-[var(--ink-100)]">
                           {unit.title}
@@ -80,7 +80,7 @@ export function CourseScreen({
                       </div>
                       {recommended ? (
                         <span className="primary-action rounded-full px-2 py-1 text-[10px] font-black uppercase">
-                          Next
+                          다음
                         </span>
                       ) : null}
                     </button>

@@ -11,9 +11,9 @@ describe('Poker Pace app', () => {
   it('shows the recommended first lesson', () => {
     render(<App />);
 
-    expect(screen.getByText(/Week 1 Day 1/i)).toBeInTheDocument();
+    expect(screen.getByText(/1주차 1일차/i)).toBeInTheDocument();
     expect(
-      screen.getByRole('button', { name: /start lesson/i }),
+      screen.getByRole('button', { name: /학습 시작/i }),
     ).toBeInTheDocument();
   });
 
@@ -21,17 +21,17 @@ describe('Poker Pace app', () => {
     render(<App />);
 
     expect(
-      screen.getByRole('link', { name: /skip to content/i }),
+      screen.getByRole('link', { name: /본문으로 건너뛰기/i }),
     ).toHaveAttribute('href', '#main-content');
     expect(
-      screen.getByRole('navigation', { name: /primary/i }),
+      screen.getByRole('navigation', { name: /주요 화면/i }),
     ).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /^today$/i })).toHaveAttribute(
+    expect(screen.getByRole('button', { name: /^오늘$/i })).toHaveAttribute(
       'aria-current',
       'page',
     );
     expect(
-      screen.getByRole('progressbar', { name: /course progress/i }),
+      screen.getByRole('progressbar', { name: /코스 진행률/i }),
     ).toHaveAttribute('aria-valuenow', '0');
   });
 
@@ -39,38 +39,36 @@ describe('Poker Pace app', () => {
     const user = userEvent.setup();
     render(<App />);
 
-    await user.click(screen.getByRole('button', { name: /start lesson/i }));
-    await user.click(screen.getByRole('button', { name: /begin quiz/i }));
+    await user.click(screen.getByRole('button', { name: /학습 시작/i }));
+    await user.click(screen.getByRole('button', { name: /퀴즈 시작/i }));
     await user.click(screen.getByRole('button', { name: /fold/i }));
 
-    expect(screen.getByText(/explanation/i)).toBeInTheDocument();
+    expect(screen.getByText(/해설/i)).toBeInTheDocument();
   });
 
   it('persists tournament checklist selections after reload', async () => {
     const user = userEvent.setup();
     const { unmount } = render(<App />);
 
-    await user.click(screen.getByRole('button', { name: /tournament/i }));
-    await user.click(screen.getByRole('checkbox', { name: /starting chips/i }));
+    await user.click(screen.getByRole('button', { name: /대회/i }));
+    await user.click(screen.getByRole('checkbox', { name: /시작 칩/i }));
     unmount();
 
     render(<App />);
-    await user.click(screen.getByRole('button', { name: /tournament/i }));
+    await user.click(screen.getByRole('button', { name: /대회/i }));
 
-    expect(
-      screen.getByRole('checkbox', { name: /starting chips/i }),
-    ).toBeChecked();
+    expect(screen.getByRole('checkbox', { name: /시작 칩/i })).toBeChecked();
   });
 
   it('shows an empty missed-question trainer state', async () => {
     const user = userEvent.setup();
     render(<App />);
 
-    await user.click(screen.getByRole('button', { name: /trainer/i }));
+    await user.click(screen.getByRole('button', { name: /복습/i }));
 
-    expect(screen.getByText(/No missed questions yet/i)).toBeInTheDocument();
+    expect(screen.getByText(/아직 틀린 문제가 없습니다/i)).toBeInTheDocument();
     expect(
-      screen.getByRole('button', { name: /random 10 questions/i }),
+      screen.getByRole('button', { name: /랜덤 10문제/i }),
     ).toBeInTheDocument();
   });
 

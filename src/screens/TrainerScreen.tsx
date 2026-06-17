@@ -19,7 +19,7 @@ export function TrainerScreen({
   return (
     <section className="rise-in space-y-6">
       <div>
-        <p className="eyebrow">Trainer</p>
+        <p className="eyebrow">복습</p>
         <h1 className="font-display mt-3 text-[2rem] font-bold leading-tight">
           퀴즈 복습
         </h1>
@@ -36,7 +36,7 @@ export function TrainerScreen({
         <Shuffle aria-hidden="true" className="size-6" />
         <span>
           <span className="block text-sm font-black uppercase tracking-[0.12em]">
-            Random 10 questions
+            랜덤 10문제
           </span>
           <span className="mt-1 block text-xs font-bold text-[oklch(27%_0.038_43)]">
             코스 전체에서 빠르게 섞어 풉니다.
@@ -50,12 +50,12 @@ export function TrainerScreen({
             aria-hidden="true"
             className="size-5 text-[var(--mint-400)]"
           />
-          <h2 className="font-display text-lg font-bold">Missed questions</h2>
+          <h2 className="font-display text-lg font-bold">틀린 문제</h2>
         </div>
         {missedQuizzes.length === 0 ? (
           <p className="mt-4 rounded-[0.85rem] bg-[oklch(13%_0.018_165_/_0.62)] p-4 text-sm font-bold leading-7 text-[var(--ink-300)]">
-            No missed questions yet. 오늘 퀴즈를 풀고 틀린 문제가 생기면 여기에
-            모입니다.
+            아직 틀린 문제가 없습니다. 오늘 퀴즈를 풀고 틀린 문제가 생기면
+            여기에 모입니다.
           </p>
         ) : (
           <ul className="mt-4 space-y-2">

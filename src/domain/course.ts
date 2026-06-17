@@ -25,9 +25,9 @@ export const quizzes: Quiz[] = [
     prompt: '내 패 A♠ K♠, 보드 A♦ 9♣ 4♥ 2♠ 2♣. 현재 내 주요 족보는?',
     context: '리버 쇼다운 직전',
     choices: [
-      { id: 'top-pair', label: 'Top pair' },
-      { id: 'two-pair', label: 'Two pair' },
-      { id: 'full-house', label: 'Full house' },
+      { id: 'top-pair', label: '탑페어' },
+      { id: 'two-pair', label: '투페어' },
+      { id: 'full-house', label: '풀하우스' },
     ],
     correctChoiceId: 'two-pair',
     explanation: 'A 한 쌍과 보드의 2 한 쌍을 함께 쓰므로 투페어입니다.',
@@ -74,13 +74,13 @@ export const quizzes: Quiz[] = [
     prompt: '보드 J♠ T♠ 9♦는 어떤 보드에 가깝나요?',
     context: '플랍 텍스처 판단',
     choices: [
-      { id: 'dry', label: 'Dry board' },
-      { id: 'wet', label: 'Wet board' },
-      { id: 'paired', label: 'Paired board' },
+      { id: 'dry', label: '드라이 보드' },
+      { id: 'wet', label: '웻 보드' },
+      { id: 'paired', label: '페어 보드' },
     ],
     correctChoiceId: 'wet',
     explanation:
-      '스트레이트와 플러시 드로우가 많아 연결성이 높은 wet board입니다.',
+      '스트레이트와 플러시 드로우가 많아 연결성이 높은 웻 보드입니다.',
     tags: ['flop', 'reading'],
   },
   {
@@ -90,9 +90,9 @@ export const quizzes: Quiz[] = [
       '내 패 A♠ 7♠, 보드 K♠ 9♠ 2♦. 플러시를 완성할 남은 스페이드는 보통 몇 장으로 봅니까?',
     context: '플랍에서 넛 플러시 드로우',
     choices: [
-      { id: '6', label: '6 outs' },
-      { id: '9', label: '9 outs' },
-      { id: '12', label: '12 outs' },
+      { id: '6', label: '6 아웃츠' },
+      { id: '9', label: '9 아웃츠' },
+      { id: '12', label: '12 아웃츠' },
     ],
     correctChoiceId: '9',
     explanation:
@@ -108,7 +108,7 @@ export const quizzes: Quiz[] = [
     choices: basicChoices,
     correctChoiceId: 'fold',
     explanation:
-      '이길 수 있는 made hand가 없고 상대를 폴드시킬 액션도 아닙니다. 콜은 칩 낭비입니다.',
+      '이길 수 있는 메이드 핸드가 없고 상대를 폴드시킬 액션도 아닙니다. 콜은 칩 낭비입니다.',
     tags: ['river', 'decision'],
   },
   {
@@ -160,9 +160,9 @@ export const quizzes: Quiz[] = [
     prompt: '내 패 8♣ 8♦, 보드 8♠ K♣ K♦ 3♥ 2♠. 현재 족보는?',
     context: '리버 쇼다운',
     choices: [
-      { id: 'trips', label: 'Trips' },
-      { id: 'full-house', label: 'Full house' },
-      { id: 'four-kind', label: 'Four of a kind' },
+      { id: 'trips', label: '트립스' },
+      { id: 'full-house', label: '풀하우스' },
+      { id: 'four-kind', label: '포카드' },
     ],
     correctChoiceId: 'full-house',
     explanation: '8 세 장과 K 두 장으로 풀하우스입니다.',
@@ -223,7 +223,7 @@ export const courseUnits: CourseUnit[] = Array.from(
         '쇼다운 이해',
         '좋은 시작패',
         '나쁜 시작패',
-        'Week 1 복습',
+        '1주차 복습',
       ],
       [
         '포지션 감각',
@@ -232,7 +232,7 @@ export const courseUnits: CourseUnit[] = Array.from(
         '버튼 플레이',
         '블라인드 방어',
         '레이즈 크기',
-        'Week 2 복습',
+        '2주차 복습',
       ],
       [
         '보드 텍스처',
@@ -241,7 +241,7 @@ export const courseUnits: CourseUnit[] = Array.from(
         '팟오즈 기초',
         '턴에서 재평가',
         '리버 결정',
-        'Week 3 복습',
+        '3주차 복습',
       ],
       [
         '스택 크기',
@@ -258,7 +258,7 @@ export const courseUnits: CourseUnit[] = Array.from(
         ? [
             {
               heading: 'GTO 기준선',
-              body: 'GTO는 상대가 완벽히 대응해도 크게 무너지지 않는 기준선입니다. 초보 단계에서는 정확한 solver 암기보다 “이 상황에서 어떤 액션을 얼마나 섞는가”를 보는 용도로 쓰면 충분합니다.',
+              body: 'GTO는 상대가 완벽히 대응해도 크게 무너지지 않는 기준선입니다. 초보 단계에서는 정확한 솔버 암기보다 “이 상황에서 어떤 액션을 얼마나 섞는가”를 보는 용도로 쓰면 충분합니다.',
             },
           ]
         : week === 3 && weekDay === 6
@@ -311,32 +311,32 @@ export const tournamentChecklistItems: TournamentChecklistItem[] = [
   },
   {
     id: 'starting-chips',
-    label: 'Starting chips',
+    label: '시작 칩',
     description: '모든 참가자가 같은 시작 칩을 받도록 정합니다.',
   },
   {
     id: 'blind-interval',
-    label: 'Blind increase interval',
+    label: '블라인드 상승 간격',
     description: '블라인드가 몇 분마다 오를지 정합니다.',
   },
   {
     id: 'blind-structure',
-    label: 'Blind structure',
+    label: '블라인드 구조',
     description: '첫 블라인드와 상승 단계를 미리 적습니다.',
   },
   {
     id: 'rebuy',
-    label: 'Rebuy rule',
+    label: '리바이 룰',
     description: '탈락 후 재참가 가능 여부와 횟수를 정합니다.',
   },
   {
     id: 'chip-colors',
-    label: 'Chip colors',
+    label: '칩 색상',
     description: '칩 색상별 가치를 헷갈리지 않게 정합니다.',
   },
   {
     id: 'prize',
-    label: 'Prize split',
+    label: '상품 배분',
     description: '상금이나 상품 배분 방식을 미리 합의합니다.',
   },
 ];
