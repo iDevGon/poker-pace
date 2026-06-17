@@ -43,7 +43,15 @@ describe('PWA metadata', () => {
   it('registers a service worker for installed app support', () => {
     expect(main).toContain('navigator.serviceWorker.register');
     expect(main).toContain('/sw.js');
-    expect(serviceWorker).toContain("const CACHE_NAME = 'poker-pace-v1'");
+    expect(serviceWorker).toContain("const CACHE_NAME = 'poker-pace-v2'");
     expect(serviceWorker).toContain("'/manifest.webmanifest'");
+  });
+
+  it('keeps navigations network-first so deployments do not serve stale HTML', () => {
+    expect(serviceWorker).toContain(
+      "const APP_SHELL = ['/manifest.webmanifest']",
+    );
+    expect(serviceWorker).toContain("event.request.mode === 'navigate'");
+    expect(serviceWorker).toContain('fetch(event.request)');
   });
 });
