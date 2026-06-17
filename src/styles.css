@@ -52,6 +52,7 @@ input {
 
 button {
   -webkit-tap-highlight-color: transparent;
+  cursor: pointer;
 }
 
 .skip-link {
