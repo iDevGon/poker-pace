@@ -24,8 +24,8 @@ export function CourseScreen({
           4주 로드맵
         </h1>
         <p className="mt-2 text-sm leading-7 text-[var(--ink-300)]">
-          권장 순서는 표시하지만 잠금은 없습니다. 오늘 더 풀고 싶으면 바로
-          이어가세요.
+          권장 순서는 표시하지만 잠금은 없습니다. 더 풀고 싶으면 바로 이어가면
+          됩니다.
         </p>
       </div>
 

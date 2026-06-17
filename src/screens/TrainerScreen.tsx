@@ -24,7 +24,7 @@ export function TrainerScreen({
           퀴즈 복습
         </h1>
         <p className="mt-2 text-sm leading-7 text-[var(--ink-300)]">
-          틀린 문제는 다시 보고, 랜덤 10문제로 실전 감각을 유지합니다.
+          틀린 문제는 다시 보고, 랜덤 10문제로 실전 감각을 이어갑니다.
         </p>
       </div>
 
@@ -39,7 +39,7 @@ export function TrainerScreen({
             랜덤 10문제
           </span>
           <span className="mt-1 block text-xs font-bold text-[oklch(27%_0.038_43)]">
-            코스 전체에서 빠르게 섞어 풉니다.
+            코스 전체에서 골고루 섞어 풉니다.
           </span>
         </span>
       </button>

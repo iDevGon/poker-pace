@@ -37,7 +37,7 @@ export function TodayScreen({
         <div>
           <p className="eyebrow">Poker Pace</p>
           <h1 className="font-display mt-3 max-w-[11ch] text-[1.9rem] font-bold leading-[1.18]">
-            오늘은 한 손만 더 좋은 결정을 만듭니다.
+            오늘은 한 핸드만 더 잘 판단합니다.
           </h1>
         </div>
         <ProgressRing percent={percent} />

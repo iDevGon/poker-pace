@@ -72,7 +72,7 @@ export function GTOScreen() {
           GTO 기준표
         </h1>
         <p className="mt-2 text-sm leading-7 text-[var(--ink-300)]">
-          상황별 기준 레인지를 빠르게 확인하고, 상대 성향에 맞춘 익스플로잇
+          상황별 기준 레인지를 빠르게 확인하고, 상대 성향에 맞는 익스플로잇
           조정을 함께 봅니다.
         </p>
       </div>

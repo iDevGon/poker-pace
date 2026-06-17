@@ -11,12 +11,12 @@ export const quizzes: Quiz[] = [
     id: 'q-rules-flow-1',
     type: 'decision',
     prompt:
-      '프리플랍에서 내 앞에 레이즈와 리레이즈가 나왔고, 나는 7♣ 2♦를 들고 있습니다. 기본 선택은?',
+      '프리플랍에서 내 앞에 레이즈와 리레이즈가 나왔습니다. 내 패는 7♣ 2♦입니다. 기본 선택은?',
     context: '초반 블라인드, 100BB, 언더더건 오픈 후 컷오프 3-bet',
     choices: basicChoices,
     correctChoiceId: 'fold',
     explanation:
-      '7-2 offsuit는 최약체 핸드입니다. 강한 액션이 앞에서 나온 상황에서는 미련 없이 폴드합니다.',
+      '7-2 offsuit는 최약체 핸드입니다. 앞에서 강한 액션이 나왔으니 미련 없이 폴드합니다.',
     tags: ['rules', 'preflop'],
   },
   {
@@ -53,7 +53,7 @@ export const quizzes: Quiz[] = [
     choices: basicChoices,
     correctChoiceId: 'fold',
     explanation:
-      '초반 포지션에서는 뒤에 남은 플레이어가 많아 애매한 오프수트 브로드웨이를 줄이는 것이 좋습니다.',
+      '초반 포지션에서는 뒤에 남은 플레이어가 많습니다. 애매한 오프수트 브로드웨이는 줄이는 편이 좋습니다.',
     tags: ['position', 'preflop'],
   },
   {
@@ -96,14 +96,14 @@ export const quizzes: Quiz[] = [
     ],
     correctChoiceId: '9',
     explanation:
-      '스페이드는 총 13장이고 내 패 2장, 보드 2장이 보였으므로 남은 스페이드는 9장입니다.',
+      '스페이드는 모두 13장입니다. 내 패 2장과 보드 2장이 보였으니 남은 스페이드는 9장입니다.',
     tags: ['outs', 'flush'],
   },
   {
     id: 'q-pot-odds-1',
     type: 'decision',
     prompt:
-      '리버에서 상대가 큰 올인을 했고, 나는 미스한 드로우뿐입니다. 쇼다운 가치가 없습니다.',
+      '리버에서 상대가 크게 올인했습니다. 내 손에는 미스한 드로우뿐이고 쇼다운 가치가 없습니다.',
     context: '블러프 캐치 근거도 부족한 상황',
     choices: basicChoices,
     correctChoiceId: 'fold',
@@ -115,7 +115,7 @@ export const quizzes: Quiz[] = [
     id: 'q-stack-1',
     type: 'decision',
     prompt:
-      '12BB로 버튼에서 A♣ 8♣를 받았고 모두 폴드했습니다. 토너먼트 기본 선택은?',
+      '12BB로 버튼에서 A♣ 8♣를 받았습니다. 모두 폴드했다면 토너먼트 기본 선택은?',
     context: '숏스택, 앤티 있음',
     choices: [
       { id: 'fold', label: 'Fold' },
@@ -131,7 +131,7 @@ export const quizzes: Quiz[] = [
     id: 'q-bubble-1',
     type: 'decision',
     prompt:
-      '입상 직전, 내 스택은 평균보다 작고 빅스택이 계속 압박합니다. 애매한 핸드로 큰 팟을 만들까요?',
+      '입상 직전입니다. 내 스택은 평균보다 작고 빅스택이 계속 압박합니다. 애매한 핸드로 큰 팟을 만들까요?',
     context: '버블 근처, 중간 스택 다수',
     choices: basicChoices,
     correctChoiceId: 'fold',
@@ -150,8 +150,7 @@ export const quizzes: Quiz[] = [
       { id: 'made-flush', label: '완성 플러시' },
     ],
     correctChoiceId: 'combo-draw',
-    explanation:
-      'K 또는 8로 스트레이트 가능성이 있고, 하트가 오면 플러시도 됩니다.',
+    explanation: 'K나 8이 오면 스트레이트가 되고, 하트가 오면 플러시도 됩니다.',
     tags: ['review', 'draw'],
   },
   {
@@ -172,7 +171,7 @@ export const quizzes: Quiz[] = [
     id: 'q-gto-baseline-1',
     type: 'decision',
     prompt:
-      '버튼에서 A♥ J♥를 들고 모두 폴드했습니다. GTO 기준선을 먼저 생각한다면 출발점은?',
+      '버튼에서 A♥ J♥를 들고 있고 모두 폴드했습니다. GTO 기준선을 먼저 본다면 출발점은?',
     context: '40BB, 버튼 오픈 상황',
     choices: [
       { id: 'fold', label: '대부분 Fold' },
@@ -181,7 +180,7 @@ export const quizzes: Quiz[] = [
     ],
     correctChoiceId: 'mix',
     explanation:
-      'GTO는 한 가지 고정 답보다 상황별 빈도를 기준으로 봅니다. 버튼 AJs는 레이즈 중심의 강한 후보입니다.',
+      'GTO는 한 가지 고정 답보다 상황별 빈도를 봅니다. 버튼 AJs는 레이즈 중심의 강한 후보입니다.',
     tags: ['gto', 'preflop'],
   },
   {
@@ -197,7 +196,7 @@ export const quizzes: Quiz[] = [
     ],
     correctChoiceId: 'widen',
     explanation:
-      '익스플로잇은 상대의 반복 실수를 이용하는 조정입니다. 과폴드하는 블라인드에게는 더 넓게 오픈할 수 있습니다.',
+      '익스플로잇은 상대의 반복 실수를 이용하는 조정입니다. 과폴드하는 블라인드에게는 더 넓게 오픈합니다.',
     tags: ['exploit', 'preflop'],
   },
 ];
@@ -258,14 +257,14 @@ export const courseUnits: CourseUnit[] = Array.from(
         ? [
             {
               heading: 'GTO 기준선',
-              body: 'GTO는 상대가 완벽히 대응해도 크게 무너지지 않는 기준선입니다. 초보 단계에서는 정확한 솔버 암기보다 “이 상황에서 어떤 액션을 얼마나 섞는가”를 보는 용도로 쓰면 충분합니다.',
+              body: 'GTO는 상대가 완벽히 대응해도 크게 무너지지 않는 기준선입니다. 초보 단계에서는 정확한 솔버 암기보다 “이 상황에서 어떤 액션을 얼마나 섞는가”를 보는 정도면 충분합니다.',
             },
           ]
         : week === 3 && weekDay === 6
           ? [
               {
                 heading: '익스플로잇 조정',
-                body: '익스플로잇은 상대의 반복 실수에 맞춰 기준선을 일부러 벗어나는 선택입니다. 너무 자주 폴드하는 상대에게는 블러프와 오픈을 늘리고, 너무 자주 콜하는 상대에게는 밸류 중심으로 압박합니다.',
+                body: '익스플로잇은 상대의 반복 실수에 맞춰 기준선을 일부러 벗어나는 선택입니다. 너무 자주 폴드하는 상대에게는 블러프와 오픈을 늘리고, 너무 자주 콜하는 상대는 밸류 중심으로 압박합니다.',
               },
             ]
           : week === 4 && weekDay === 6
@@ -282,12 +281,12 @@ export const courseUnits: CourseUnit[] = Array.from(
       week,
       day: weekDay,
       title: titleSeeds[week - 1][weekDay - 1],
-      goal: `${weeklyTopics[week - 1]}을 실제 한 손 결정으로 연결합니다.`,
+      goal: `${weeklyTopics[week - 1]}을 실제 핸드 결정으로 연결합니다.`,
       estimatedMinutes: weekDay === 7 ? 12 : 8,
       lessonBlocks: [
         {
           heading: weeklyTopics[week - 1],
-          body: '오늘은 한 가지 개념만 잡고 바로 퀴즈로 확인합니다. 완벽한 암기보다 반복해서 좋은 결정을 내리는 감각이 우선입니다.',
+          body: '오늘은 한 가지 개념만 잡고 바로 퀴즈로 확인합니다. 완벽한 암기보다 좋은 결정을 반복하는 감각이 우선입니다.',
         },
         {
           heading: '실전 기준',

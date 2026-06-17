@@ -74,12 +74,12 @@ export default function App() {
       week: 0,
       day: 0,
       title: quizIds.length === 1 ? '틀린 문제 복습' : '랜덤 10문제',
-      goal: '빠르게 판단하고 해설로 기준을 확인합니다.',
+      goal: '빠르게 판단한 뒤 해설로 기준을 확인합니다.',
       estimatedMinutes: quizIds.length === 1 ? 2 : 10,
       lessonBlocks: [
         {
           heading: '복습',
-          body: '이번 세션은 레슨 없이 바로 퀴즈로 들어갑니다. 선택 후 해설을 보고 기준을 정리하세요.',
+          body: '이번 세션은 레슨 없이 바로 퀴즈로 시작합니다. 선택한 뒤 해설을 보며 기준을 정리하세요.',
         },
       ],
       quizIds,

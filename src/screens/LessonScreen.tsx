@@ -192,7 +192,7 @@ export function LessonScreen({
         <div className="surface rounded-[1.1rem] p-6">
           <p className="eyebrow">학습 완료</p>
           <h2 className="font-display mt-3 text-2xl font-bold leading-tight">
-            좋습니다. 바로 다음 학습으로 이어갈 수 있습니다.
+            좋습니다. 바로 다음 학습으로 이어가면 됩니다.
           </h2>
           <button
             type="button"
