@@ -154,6 +154,68 @@ describe('Poker Pace app', () => {
     }
   });
 
+  it('links position abbreviations in quiz text to their own guide terms', async () => {
+    const user = userEvent.setup();
+    const openGuideTerm = vi.fn();
+    render(
+      <LessonScreen
+        unit={{
+          id: 'position-link-unit',
+          week: 1,
+          day: 1,
+          title: '포지션 링크',
+          goal: '문제 속 포지션 약어를 용어설명으로 연결합니다.',
+          estimatedMinutes: 1,
+          lessonBlocks: [],
+          quizIds: ['q-suited-connector-1'],
+        }}
+        onBack={vi.fn()}
+        onAnswer={vi.fn()}
+        onComplete={vi.fn()}
+        onOpenGuideTerm={openGuideTerm}
+      />,
+    );
+
+    await user.click(screen.getByRole('button', { name: /퀴즈 시작/i }));
+    await user.click(screen.getByRole('button', { name: /UTG 용어 보기/i }));
+    await user.click(screen.getByRole('button', { name: /MP 용어 보기/i }));
+    await user.click(screen.getByRole('button', { name: /CO 용어 보기/i }));
+
+    expect(openGuideTerm).toHaveBeenNthCalledWith(1, 'UTG');
+    expect(openGuideTerm).toHaveBeenNthCalledWith(2, 'MP');
+    expect(openGuideTerm).toHaveBeenNthCalledWith(3, 'CO');
+  });
+
+  it('links numeric BB expressions in quiz text to the big blind guide term', async () => {
+    const user = userEvent.setup();
+    const openGuideTerm = vi.fn();
+    render(
+      <LessonScreen
+        unit={{
+          id: 'bb-amount-link-unit',
+          week: 1,
+          day: 1,
+          title: 'BB 금액 링크',
+          goal: '문제 속 BB 단위 표현을 용어설명으로 연결합니다.',
+          estimatedMinutes: 1,
+          lessonBlocks: [],
+          quizIds: ['q-bb-defense-tight-1'],
+        }}
+        onBack={vi.fn()}
+        onAnswer={vi.fn()}
+        onComplete={vi.fn()}
+        onOpenGuideTerm={openGuideTerm}
+      />,
+    );
+
+    await user.click(screen.getByRole('button', { name: /퀴즈 시작/i }));
+    await user.click(screen.getByRole('button', { name: /2.2BB 용어 보기/i }));
+    await user.click(screen.getByRole('button', { name: /35BB 용어 보기/i }));
+
+    expect(openGuideTerm).toHaveBeenNthCalledWith(1, 'BB');
+    expect(openGuideTerm).toHaveBeenNthCalledWith(2, 'BB');
+  });
+
   it('opens the beginner guide with searchable hand and rank references', async () => {
     const user = userEvent.setup();
     render(<App />);

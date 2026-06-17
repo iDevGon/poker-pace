@@ -22,6 +22,7 @@ const cardTokenPattern = /[AKQJT98765432][♠♥♦♣]/g;
 const cardSequencePattern =
   /[AKQJT98765432][♠♥♦♣](?:\s+[AKQJT98765432][♠♥♦♣])*/;
 const skippedGuideLabels = new Set(['s', 'o', 't', 'aa', 'kk', '77']);
+const bbAmountPattern = /\d+(?:\.\d+)?BB/gi;
 
 const guideLinkCandidates = guideEntries
   .filter((entry) => entry.category !== '족보')
@@ -97,45 +98,90 @@ type GuideMatch = {
 };
 
 const isTokenChar = (value: string) => /[\p{L}\p{N}]/u.test(value);
+const isAsciiTokenChar = (value: string) => /[A-Za-z0-9]/.test(value);
+const isAsciiGuideLabel = (value: string) => /^[A-Za-z0-9+.-]+$/.test(value);
 
-const hasGuideTermBoundary = (text: string, index: number, length: number) => {
+const hasGuideTermBoundary = (
+  text: string,
+  index: number,
+  candidate: (typeof guideLinkCandidates)[number],
+) => {
+  const { label } = candidate;
   const before = text[index - 1];
-  const after = text[index + length];
+  const after = text[index + label.length];
+  const isBlockingTokenChar = isAsciiGuideLabel(label)
+    ? isAsciiTokenChar
+    : isTokenChar;
 
-  return (!before || !isTokenChar(before)) && (!after || !isTokenChar(after));
+  return (
+    (!before || !isBlockingTokenChar(before)) &&
+    (!after || !isBlockingTokenChar(after))
+  );
 };
 
 const findNextGuideMatch = (text: string): GuideMatch | null => {
   const normalizedText = text.toLocaleLowerCase();
+  const guideMatch = guideLinkCandidates.reduce<GuideMatch | null>(
+    (current, candidate) => {
+      let index = normalizedText.indexOf(candidate.normalizedLabel);
 
-  return guideLinkCandidates.reduce<GuideMatch | null>((current, candidate) => {
-    let index = normalizedText.indexOf(candidate.normalizedLabel);
+      while (index !== -1 && !hasGuideTermBoundary(text, index, candidate)) {
+        index = normalizedText.indexOf(candidate.normalizedLabel, index + 1);
+      }
 
-    while (
-      index !== -1 &&
-      !hasGuideTermBoundary(text, index, candidate.label.length)
-    ) {
-      index = normalizedText.indexOf(candidate.normalizedLabel, index + 1);
-    }
+      if (index === -1) {
+        return current;
+      }
 
-    if (index === -1) {
+      if (
+        !current ||
+        index < current.index ||
+        (index === current.index &&
+          candidate.label.length > current.label.length)
+      ) {
+        return {
+          index,
+          label: text.slice(index, index + candidate.label.length),
+          term: candidate.term,
+        };
+      }
+
       return current;
-    }
+    },
+    null,
+  );
+  bbAmountPattern.lastIndex = 0;
+
+  for (
+    let amountMatch = bbAmountPattern.exec(text);
+    amountMatch;
+    amountMatch = bbAmountPattern.exec(text)
+  ) {
+    const label = amountMatch[0];
+    const index = amountMatch.index;
+    const before = text[index - 1];
+    const after = text[index + label.length];
 
     if (
-      !current ||
-      index < current.index ||
-      (index === current.index && candidate.label.length > current.label.length)
+      (!before || !isAsciiTokenChar(before)) &&
+      (!after || !isAsciiTokenChar(after))
     ) {
-      return {
-        index,
-        label: text.slice(index, index + candidate.label.length),
-        term: candidate.term,
-      };
-    }
+      const bbMatch = { index, label, term: 'BB' };
 
-    return current;
-  }, null);
+      if (
+        !guideMatch ||
+        bbMatch.index < guideMatch.index ||
+        (bbMatch.index === guideMatch.index &&
+          bbMatch.label.length > guideMatch.label.length)
+      ) {
+        return bbMatch;
+      }
+
+      return guideMatch;
+    }
+  }
+
+  return guideMatch;
 };
 
 function TextWithGuideLinks({

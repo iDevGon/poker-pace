@@ -175,7 +175,15 @@ export const guideEntries: GuideEntry[] = [
     english: 'Lojack',
     category: '포지션',
     description: '9명 테이블 기준 중간 포지션으로, 하이잭보다 이른 자리입니다.',
-    aliases: ['로잭', 'lojack', 'middle position', 'MP'],
+    aliases: ['로잭', 'lojack'],
+  },
+  {
+    term: 'MP',
+    english: 'Middle Position',
+    category: '포지션',
+    description:
+      '중간 포지션입니다. 보통 UTG보다 뒤, HJ/CO/BTN보다는 앞의 자리 묶음으로 씁니다.',
+    aliases: ['미들 포지션', 'middle position'],
   },
   {
     term: 'HJ',
