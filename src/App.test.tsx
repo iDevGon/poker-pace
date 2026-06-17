@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import App from './App';
@@ -108,26 +108,50 @@ describe('Poker Pace app', () => {
 
   it('links quiz terms to the guide and returns to the same question', async () => {
     const user = userEvent.setup();
+    const scrollIntoView = vi.fn();
+    const originalScrollIntoView = Element.prototype.scrollIntoView;
+    Element.prototype.scrollIntoView = scrollIntoView;
     render(<App />);
 
-    await user.click(screen.getByRole('button', { name: /학습 시작/i }));
-    await user.click(screen.getByRole('button', { name: /퀴즈 시작/i }));
-    await user.click(screen.getByRole('button', { name: /100BB 용어 보기/i }));
+    try {
+      await user.click(screen.getByRole('button', { name: /학습 시작/i }));
+      await user.click(screen.getByRole('button', { name: /퀴즈 시작/i }));
+      await user.click(
+        screen.getByRole('button', { name: /100BB 용어 보기/i }),
+      );
 
-    expect(
-      screen.getByRole('button', { name: /문제로 돌아가기/i }),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole('tab', { name: /용어설명/i, selected: true }),
-    ).toBeInTheDocument();
-    expect(screen.getByRole('heading', { name: '100BB' })).toBeInTheDocument();
+      const returnButton = screen.getByRole('button', {
+        name: /문제로 돌아가기/i,
+      });
+      const returnBar = returnButton.closest('[data-guide-return-bar="true"]');
+      expect(returnBar).toHaveClass('fixed');
+      expect(returnBar).toHaveClass('bg-[oklch(12%_0.015_165_/_0.86)]');
+      expect(returnButton).not.toHaveClass('left-1/2');
+      expect(returnButton.closest('.rise-in')).toBeNull();
+      expect(
+        screen.getByRole('tab', { name: /용어설명/i, selected: true }),
+      ).toBeInTheDocument();
+      expect(
+        screen.getByRole('heading', { name: '100BB' }),
+      ).toBeInTheDocument();
+      await waitFor(() =>
+        expect(scrollIntoView).toHaveBeenCalledWith({
+          block: 'center',
+          behavior: 'auto',
+        }),
+      );
 
-    await user.click(screen.getByRole('button', { name: /문제로 돌아가기/i }));
+      await user.click(
+        screen.getByRole('button', { name: /문제로 돌아가기/i }),
+      );
 
-    expect(screen.getByText(/문제 1\/2/i)).toBeInTheDocument();
-    expect(
-      screen.getByRole('button', { name: /100BB 용어 보기/i }),
-    ).toBeInTheDocument();
+      expect(screen.getByText(/문제 1\/2/i)).toBeInTheDocument();
+      expect(
+        screen.getByRole('button', { name: /100BB 용어 보기/i }),
+      ).toBeInTheDocument();
+    } finally {
+      Element.prototype.scrollIntoView = originalScrollIntoView;
+    }
   });
 
   it('opens the beginner guide with searchable hand and rank references', async () => {

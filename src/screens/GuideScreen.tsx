@@ -908,145 +908,154 @@ export function GuideScreen({
     }
 
     const element = entryRefs.current.get(targetEntry.term);
-    element?.scrollIntoView?.({ block: 'center', behavior: 'smooth' });
+    element?.scrollIntoView?.({ block: 'center', behavior: 'auto' });
   }, [activeTab, normalizedQuery, targetEntry]);
 
   return (
-    <section className="rise-in space-y-6">
-      <div>
-        {onReturnToQuestion ? (
-          <button
-            type="button"
-            onClick={onReturnToQuestion}
-            className="chip mb-5 flex items-center gap-2 px-3 py-2 text-sm font-bold transition hover:bg-[oklch(86%_0.018_94_/_0.06)]"
-          >
-            <ArrowLeft aria-hidden="true" className="size-4" />
-            문제로 돌아가기
-          </button>
-        ) : null}
-        <p className="eyebrow">Beginner Guide</p>
-        <h1 className="font-display mt-3 text-[2rem] font-bold leading-tight">
-          홀덤 가이드
-        </h1>
-        <p className="mt-2 text-sm leading-7 text-[var(--ink-300)]">
-          족보, 핸드 표기, 포지션과 기본 용어를 빠르게 확인합니다.
-        </p>
-      </div>
-
-      <div
-        role="tablist"
-        aria-label="가이드 종류"
-        className="grid grid-cols-2 gap-2"
-      >
-        {tabs.map((tab) => {
-          const selected = activeTab === tab.id;
-
-          return (
+    <>
+      {onReturnToQuestion ? (
+        <div
+          data-guide-return-bar="true"
+          className="fixed inset-x-0 top-0 z-30 border-b border-[oklch(86%_0.018_94_/_0.12)] bg-[oklch(12%_0.015_165_/_0.86)] backdrop-blur"
+        >
+          <div className="mx-auto flex max-w-md px-5 py-3">
             <button
-              key={tab.id}
               type="button"
-              role="tab"
-              aria-selected={selected}
-              className={`min-h-11 rounded-[0.85rem] px-3 text-sm font-black transition ${
-                selected
-                  ? 'tab-active'
-                  : 'surface text-[var(--ink-300)] hover:text-[var(--ink-100)]'
-              }`}
-              onClick={() => {
-                setActiveTab(tab.id);
-                setQuery('');
-              }}
+              onClick={onReturnToQuestion}
+              className="chip flex items-center gap-2 px-3 py-2 text-sm font-bold transition hover:bg-[oklch(86%_0.018_94_/_0.06)]"
             >
-              {tab.label}
+              <ArrowLeft aria-hidden="true" className="size-4" />
+              문제로 돌아가기
             </button>
-          );
-        })}
-      </div>
+          </div>
+        </div>
+      ) : null}
+      <section className="rise-in space-y-6">
+        <div className={onReturnToQuestion ? 'pt-16' : undefined}>
+          <p className="eyebrow">Beginner Guide</p>
+          <h1 className="font-display mt-3 text-[2rem] font-bold leading-tight">
+            홀덤 가이드
+          </h1>
+          <p className="mt-2 text-sm leading-7 text-[var(--ink-300)]">
+            족보, 핸드 표기, 포지션과 기본 용어를 빠르게 확인합니다.
+          </p>
+        </div>
 
-      <label className="block">
-        <span className="mb-2 block text-xs font-bold text-[var(--ink-300)]">
-          용어 검색
-        </span>
-        <span className="surface flex min-h-12 items-center gap-2 rounded-[0.85rem] px-3">
-          <Search
-            aria-hidden="true"
-            className="size-4 text-[var(--clay-300)]"
-          />
-          <input
-            type="search"
-            value={query}
-            onChange={(event) => setQuery(event.target.value)}
-            placeholder="BB, 에어라인, 풀하우스"
-            className="min-w-0 flex-1 bg-transparent text-sm font-bold text-[var(--ink-100)] placeholder:text-[var(--ink-300)] focus:outline-none"
-          />
-        </span>
-      </label>
+        <div
+          role="tablist"
+          aria-label="가이드 종류"
+          className="grid grid-cols-2 gap-2"
+        >
+          {tabs.map((tab) => {
+            const selected = activeTab === tab.id;
 
-      {normalizedQuery ? (
-        <section aria-labelledby="guide-search-heading" className="space-y-3">
-          <h2 id="guide-search-heading" className="eyebrow">
-            검색 결과
-          </h2>
-          {visibleEntries.length > 0 ? (
-            visibleEntries.map((entry) => (
-              <EntryCard
-                key={`${entry.category}-${entry.term}`}
-                entry={entry}
-                highlighted={entry.term === targetEntry?.term}
-                refCallback={(element) => {
-                  if (element) {
-                    entryRefs.current.set(entry.term, element);
-                  } else {
-                    entryRefs.current.delete(entry.term);
-                  }
+            return (
+              <button
+                key={tab.id}
+                type="button"
+                role="tab"
+                aria-selected={selected}
+                className={`min-h-11 rounded-[0.85rem] px-3 text-sm font-black transition ${
+                  selected
+                    ? 'tab-active'
+                    : 'surface text-[var(--ink-300)] hover:text-[var(--ink-100)]'
+                }`}
+                onClick={() => {
+                  setActiveTab(tab.id);
+                  setQuery('');
                 }}
-              />
-            ))
-          ) : (
-            <p className="surface rounded-[1rem] p-5 text-sm font-bold text-[var(--ink-300)]">
-              일치하는 항목이 없습니다.
-            </p>
-          )}
-        </section>
-      ) : (
-        tabCategories.map((category) => {
-          const categoryEntries = visibleEntries.filter(
-            (entry) => entry.category === category,
-          );
+              >
+                {tab.label}
+              </button>
+            );
+          })}
+        </div>
 
-          if (categoryEntries.length === 0) {
-            return null;
-          }
+        <label className="block">
+          <span className="mb-2 block text-xs font-bold text-[var(--ink-300)]">
+            용어 검색
+          </span>
+          <span className="surface flex min-h-12 items-center gap-2 rounded-[0.85rem] px-3">
+            <Search
+              aria-hidden="true"
+              className="size-4 text-[var(--clay-300)]"
+            />
+            <input
+              type="search"
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+              placeholder="BB, 에어라인, 풀하우스"
+              className="min-w-0 flex-1 bg-transparent text-sm font-bold text-[var(--ink-100)] placeholder:text-[var(--ink-300)] focus:outline-none"
+            />
+          </span>
+        </label>
 
-          return (
-            <section
-              key={category}
-              aria-labelledby={`guide-${category}`}
-              className="space-y-3"
-            >
-              <h2 id={`guide-${category}`} className="eyebrow">
-                {category}
-              </h2>
-              <div className="space-y-3">
-                {categoryEntries.map((entry) => (
-                  <EntryCard
-                    key={`${entry.category}-${entry.term}`}
-                    entry={entry}
-                    highlighted={entry.term === targetEntry?.term}
-                    refCallback={(element) => {
-                      if (element) {
-                        entryRefs.current.set(entry.term, element);
-                      } else {
-                        entryRefs.current.delete(entry.term);
-                      }
-                    }}
-                  />
-                ))}
-              </div>
-            </section>
-          );
-        })
-      )}
-    </section>
+        {normalizedQuery ? (
+          <section aria-labelledby="guide-search-heading" className="space-y-3">
+            <h2 id="guide-search-heading" className="eyebrow">
+              검색 결과
+            </h2>
+            {visibleEntries.length > 0 ? (
+              visibleEntries.map((entry) => (
+                <EntryCard
+                  key={`${entry.category}-${entry.term}`}
+                  entry={entry}
+                  highlighted={entry.term === targetEntry?.term}
+                  refCallback={(element) => {
+                    if (element) {
+                      entryRefs.current.set(entry.term, element);
+                    } else {
+                      entryRefs.current.delete(entry.term);
+                    }
+                  }}
+                />
+              ))
+            ) : (
+              <p className="surface rounded-[1rem] p-5 text-sm font-bold text-[var(--ink-300)]">
+                일치하는 항목이 없습니다.
+              </p>
+            )}
+          </section>
+        ) : (
+          tabCategories.map((category) => {
+            const categoryEntries = visibleEntries.filter(
+              (entry) => entry.category === category,
+            );
+
+            if (categoryEntries.length === 0) {
+              return null;
+            }
+
+            return (
+              <section
+                key={category}
+                aria-labelledby={`guide-${category}`}
+                className="space-y-3"
+              >
+                <h2 id={`guide-${category}`} className="eyebrow">
+                  {category}
+                </h2>
+                <div className="space-y-3">
+                  {categoryEntries.map((entry) => (
+                    <EntryCard
+                      key={`${entry.category}-${entry.term}`}
+                      entry={entry}
+                      highlighted={entry.term === targetEntry?.term}
+                      refCallback={(element) => {
+                        if (element) {
+                          entryRefs.current.set(entry.term, element);
+                        } else {
+                          entryRefs.current.delete(entry.term);
+                        }
+                      }}
+                    />
+                  ))}
+                </div>
+              </section>
+            );
+          })
+        )}
+      </section>
+    </>
   );
 }
