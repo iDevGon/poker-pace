@@ -228,6 +228,7 @@ describe('Poker Pace app', () => {
     render(<App />);
 
     await user.click(screen.getByRole('button', { name: /^gto$/i }));
+    await user.click(screen.getByRole('button', { name: /BTN 오픈/i }));
     await user.click(screen.getByRole('button', { name: /AJs/i }));
 
     expect(
@@ -237,6 +238,43 @@ describe('Poker Pace app', () => {
     expect(screen.getByText(/Call 20%/i)).toBeInTheDocument();
     expect(screen.getByText(/Fold 10%/i)).toBeInTheDocument();
     expect(screen.getByText(/3-bet이 잦으면/i)).toBeInTheDocument();
+  });
+
+  it('zooms the GTO hand matrix with controls', async () => {
+    const user = userEvent.setup();
+    render(<App />);
+
+    await user.click(screen.getByRole('button', { name: /^gto$/i }));
+
+    const matrix = screen.getByLabelText(/핸드 매트릭스/i);
+    expect(matrix).toHaveStyle({ transform: 'scale(0.5)' });
+
+    await user.click(screen.getByRole('button', { name: /매트릭스 확대/i }));
+
+    expect(matrix).toHaveStyle({ transform: 'scale(0.65)' });
+
+    await user.click(screen.getByRole('button', { name: /매트릭스 축소/i }));
+    await user.click(screen.getByRole('button', { name: /매트릭스 초기화/i }));
+
+    expect(matrix).toHaveStyle({ transform: 'scale(0.5)' });
+  });
+
+  it('updates selected hand details when the GTO situation changes', async () => {
+    const user = userEvent.setup();
+    render(<App />);
+
+    await user.click(screen.getByRole('button', { name: /^gto$/i }));
+    await user.click(screen.getByRole('button', { name: /BTN 오픈/i }));
+
+    expect(screen.getByText(/Raise 70%/i)).toBeInTheDocument();
+
+    await user.click(screen.getByRole('button', { name: /UTG 오픈/i }));
+
+    expect(
+      screen.getByRole('heading', { name: /UTG 오픈/i }),
+    ).toBeInTheDocument();
+    expect(screen.getByText(/Raise 62%/i)).toBeInTheDocument();
+    expect(screen.queryByText(/Raise 70%/i)).toBeNull();
   });
 
   it('groups GTO spots by category before selecting a situation', async () => {

@@ -1,11 +1,12 @@
 import { Activity, Grid3X3 } from 'lucide-react';
-import { useMemo, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { gtoSpots, handRanks, handSuits } from '../domain/gto';
 import type { GtoHandStrategy, GtoSpot } from '../domain/types';
 
 const categoryLabels: Record<GtoSpot['category'], string> = {
   Open: 'Open',
   Defend: 'Defend',
+  '3-bet': '3-bet',
   'Vs 3-bet': 'Vs 3-bet',
 };
 
@@ -28,6 +29,18 @@ const actionColor = (hand: GtoHandStrategy) => {
 const findHand = (hands: GtoHandStrategy[], handId: string) =>
   hands.find((hand) => hand.id === handId) ?? hands[0];
 
+const defaultMatrixScale = 0.5;
+const minMatrixScale = 0.4;
+const maxMatrixScale = 1.8;
+const matrixScaleStep = 0.15;
+const matrixBaseSizeRem = 38.75;
+
+const clampMatrixScale = (scale: number) =>
+  Math.min(maxMatrixScale, Math.max(minMatrixScale, Number(scale.toFixed(2))));
+
+const getTouchDistance = (first: PointerEvent, second: PointerEvent) =>
+  Math.hypot(first.clientX - second.clientX, first.clientY - second.clientY);
+
 export function GTOScreen() {
   const [spotId, setSpotId] = useState(gtoSpots[0].id);
   const [category, setCategory] = useState<GtoSpot['category']>(
@@ -36,6 +49,9 @@ export function GTOScreen() {
   const spot =
     gtoSpots.find((candidate) => candidate.id === spotId) ?? gtoSpots[0];
   const [selectedHandId, setSelectedHandId] = useState('AJs');
+  const [matrixScale, setMatrixScale] = useState(defaultMatrixScale);
+  const activePointers = useRef(new Map<number, PointerEvent>());
+  const pinchStart = useRef<{ distance: number; scale: number } | null>(null);
   const selectedHand = findHand(spot.hands, selectedHandId);
   const visibleSpots = gtoSpots.filter(
     (candidate) => candidate.category === category,
@@ -62,6 +78,63 @@ export function GTOScreen() {
     setSelectedHandId(findHand(nextSpot.hands, selectedHandId).id);
   };
 
+  const updateMatrixScale = (nextScale: number) => {
+    setMatrixScale(clampMatrixScale(nextScale));
+  };
+
+  const stopPinch = (pointerId: number) => {
+    activePointers.current.delete(pointerId);
+
+    if (activePointers.current.size < 2) {
+      pinchStart.current = null;
+    }
+  };
+
+  const handleMatrixPointerDown = (
+    event: React.PointerEvent<HTMLDivElement>,
+  ) => {
+    if (event.pointerType !== 'touch') {
+      return;
+    }
+
+    activePointers.current.set(event.pointerId, event.nativeEvent);
+
+    if (activePointers.current.size === 2) {
+      const [first, second] = Array.from(activePointers.current.values());
+      pinchStart.current = {
+        distance: getTouchDistance(first, second),
+        scale: matrixScale,
+      };
+
+      try {
+        event.currentTarget.setPointerCapture(event.pointerId);
+      } catch {
+        // Some synthetic pointer events used in tests do not create a capturable pointer.
+      }
+    }
+  };
+
+  const handleMatrixPointerMove = (
+    event: React.PointerEvent<HTMLDivElement>,
+  ) => {
+    if (event.pointerType !== 'touch') {
+      return;
+    }
+
+    activePointers.current.set(event.pointerId, event.nativeEvent);
+
+    if (activePointers.current.size < 2 || !pinchStart.current) {
+      return;
+    }
+
+    event.preventDefault();
+    const [first, second] = Array.from(activePointers.current.values());
+    const distance = getTouchDistance(first, second);
+    updateMatrixScale(
+      pinchStart.current.scale * (distance / pinchStart.current.distance),
+    );
+  };
+
   return (
     <section className="rise-in space-y-6">
       <div>
@@ -78,7 +151,7 @@ export function GTOScreen() {
       </div>
 
       <div className="surface rounded-[1.5rem] p-3">
-        <fieldset className="mb-3 grid grid-cols-3 gap-2">
+        <fieldset className="mb-3 grid grid-cols-2 gap-2 sm:grid-cols-4">
           <legend className="sr-only">GTO 상황 카테고리</legend>
           {spotCategories.map((candidate) => {
             const active = candidate === category;
@@ -143,45 +216,93 @@ export function GTOScreen() {
           </div>
         </div>
 
-        <div className="mt-5 max-h-[26rem] overflow-auto overscroll-contain rounded-[0.8rem] border border-[oklch(86%_0.018_94_/_0.12)] p-2">
-          <fieldset className="relative grid w-max grid-cols-[repeat(13,2.75rem)] gap-1">
-            <legend className="sr-only">{spot.title} 핸드 매트릭스</legend>
-            {handRanks.flatMap((row) =>
-              handSuits.map((column) => {
-                const rowIndex = handRanks.indexOf(row);
-                const columnIndex = handSuits.indexOf(column);
-                const handId =
-                  row === column
-                    ? `${row}${column}`
-                    : rowIndex < columnIndex
-                      ? `${row}${column}s`
-                      : `${column}${row}o`;
-                const hand = handsById.get(handId);
-                const selected = selectedHand.id === handId;
+        <div className="relative mt-5 flex items-center justify-between gap-3">
+          <p className="eyebrow">Matrix zoom</p>
+          <div className="flex items-center gap-1.5">
+            <button
+              type="button"
+              aria-label="매트릭스 축소"
+              onClick={() => updateMatrixScale(matrixScale - matrixScaleStep)}
+              className="chip size-9 text-sm font-black"
+            >
+              -
+            </button>
+            <button
+              type="button"
+              aria-label="매트릭스 초기화"
+              onClick={() => updateMatrixScale(defaultMatrixScale)}
+              className="chip h-9 px-3 text-xs font-black"
+            >
+              {Math.round(matrixScale * 100)}%
+            </button>
+            <button
+              type="button"
+              aria-label="매트릭스 확대"
+              onClick={() => updateMatrixScale(matrixScale + matrixScaleStep)}
+              className="chip size-9 text-sm font-black"
+            >
+              +
+            </button>
+          </div>
+        </div>
 
-                return (
-                  <button
-                    key={`${row}-${column}`}
-                    type="button"
-                    aria-pressed={selected}
-                    aria-label={`${handId} Raise ${hand?.raise ?? 0}%, Call ${
-                      hand?.call ?? 0
-                    }%, Fold ${hand?.fold ?? 0}%`}
-                    onClick={() => setSelectedHandId(handId)}
-                    className={`size-11 rounded-[0.38rem] text-[0.64rem] font-black transition active:scale-95 ${
-                      hand ? actionColor(hand) : 'bg-[var(--felt-800)]'
-                    } ${
-                      selected
-                        ? 'outline outline-2 outline-offset-2 outline-[var(--ink-100)]'
-                        : 'opacity-86 hover:opacity-100'
-                    }`}
-                  >
-                    {handId}
-                  </button>
-                );
-              }),
-            )}
-          </fieldset>
+        <div
+          className="mt-3 max-h-[26rem] overflow-auto overscroll-contain rounded-[0.8rem] border border-[oklch(86%_0.018_94_/_0.12)] p-2 [touch-action:pan-x_pan-y]"
+          onPointerDown={handleMatrixPointerDown}
+          onPointerMove={handleMatrixPointerMove}
+          onPointerUp={(event) => stopPinch(event.pointerId)}
+          onPointerCancel={(event) => stopPinch(event.pointerId)}
+          onPointerLeave={(event) => stopPinch(event.pointerId)}
+        >
+          <div
+            style={{
+              width: `${matrixBaseSizeRem * matrixScale}rem`,
+              height: `${matrixBaseSizeRem * matrixScale}rem`,
+            }}
+          >
+            <fieldset
+              aria-label={`${spot.title} 핸드 매트릭스`}
+              className="relative grid w-max origin-top-left grid-cols-[repeat(13,2.75rem)] gap-1"
+              style={{ transform: `scale(${matrixScale})` }}
+            >
+              <legend className="sr-only">{spot.title} 핸드 매트릭스</legend>
+              {handRanks.flatMap((row) =>
+                handSuits.map((column) => {
+                  const rowIndex = handRanks.indexOf(row);
+                  const columnIndex = handSuits.indexOf(column);
+                  const handId =
+                    row === column
+                      ? `${row}${column}`
+                      : rowIndex < columnIndex
+                        ? `${row}${column}s`
+                        : `${column}${row}o`;
+                  const hand = handsById.get(handId);
+                  const selected = selectedHand.id === handId;
+
+                  return (
+                    <button
+                      key={`${row}-${column}`}
+                      type="button"
+                      aria-pressed={selected}
+                      aria-label={`${handId} Raise ${hand?.raise ?? 0}%, Call ${
+                        hand?.call ?? 0
+                      }%, Fold ${hand?.fold ?? 0}%`}
+                      onClick={() => setSelectedHandId(handId)}
+                      className={`size-11 rounded-[0.38rem] text-[0.64rem] font-black transition active:scale-95 ${
+                        hand ? actionColor(hand) : 'bg-[var(--felt-800)]'
+                      } ${
+                        selected
+                          ? 'outline outline-2 outline-offset-2 outline-[var(--ink-100)]'
+                          : 'opacity-86 hover:opacity-100'
+                      }`}
+                    >
+                      {handId}
+                    </button>
+                  );
+                }),
+              )}
+            </fieldset>
+          </div>
         </div>
       </section>
 
