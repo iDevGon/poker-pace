@@ -115,8 +115,28 @@ describe('Poker Pace app', () => {
     expect(
       screen.getByRole('heading', { name: /홀덤 가이드/i }),
     ).toBeInTheDocument();
+    expect(
+      screen.getByRole('tab', { name: /족보/i, selected: true }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('tab', { name: /용어설명/i, selected: false }),
+    ).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: /족보/i })).toBeInTheDocument();
     expect(screen.getByLabelText('풀하우스 예시 카드')).toHaveTextContent('K');
+    expect(screen.queryByText('에어라인')).toBeNull();
+
+    await user.click(screen.getByRole('tab', { name: /용어설명/i }));
+
+    expect(
+      screen.getByRole('tab', { name: /용어설명/i, selected: true }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: /포지션/i }),
+    ).toBeInTheDocument();
+    expect(screen.getByText('UTG+1')).toBeInTheDocument();
+    expect(screen.getByText('HJ')).toBeInTheDocument();
+    expect(screen.getByText('CO')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: '100BB' })).toBeInTheDocument();
 
     await user.type(
       screen.getByRole('searchbox', { name: /용어 검색/i }),
@@ -129,6 +149,17 @@ describe('Poker Pace app', () => {
     expect(screen.getByText('에어라인')).toBeInTheDocument();
     expect(screen.getByText(/AA를 부르는 별칭/i)).toBeInTheDocument();
     expect(screen.queryByText('로열 플러시')).toBeNull();
+
+    await user.clear(screen.getByRole('searchbox', { name: /용어 검색/i }));
+    await user.type(
+      screen.getByRole('searchbox', { name: /용어 검색/i }),
+      'BB',
+    );
+
+    expect(screen.getByText('BB')).toBeInTheDocument();
+    expect(
+      screen.getByText(/스택이나 팟 크기를 세는 단위/i),
+    ).toBeInTheDocument();
   });
 
   it('shows an empty guide search state', async () => {
