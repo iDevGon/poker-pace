@@ -19,10 +19,8 @@ export function TrainerScreen({
   return (
     <section className="rise-in space-y-6">
       <div>
-        <p className="font-display text-sm font-bold uppercase tracking-[0.28em] text-[var(--mint-400)]">
-          Trainer
-        </p>
-        <h1 className="font-display mt-3 text-[2rem] font-black leading-tight">
+        <p className="eyebrow">Trainer</p>
+        <h1 className="font-display mt-3 text-[2rem] font-bold leading-tight">
           퀴즈 복습
         </h1>
         <p className="mt-2 text-sm leading-7 text-[var(--ink-300)]">
@@ -33,7 +31,7 @@ export function TrainerScreen({
       <button
         type="button"
         onClick={() => onStartQuiz(randomQuizIds)}
-        className="primary-action flex min-h-16 w-full items-center gap-3 rounded-[1.5rem] px-5 text-left transition hover:brightness-105 active:translate-y-px"
+        className="primary-action flex min-h-16 w-full items-center gap-3 rounded-[0.95rem] px-5 text-left transition hover:brightness-105 active:translate-y-px"
       >
         <Shuffle aria-hidden="true" className="size-6" />
         <span>
@@ -46,16 +44,16 @@ export function TrainerScreen({
         </span>
       </button>
 
-      <div className="surface rounded-[2rem] p-5">
+      <div className="surface rounded-[1.1rem] p-5">
         <div className="flex items-center gap-3">
           <RotateCcw
             aria-hidden="true"
             className="size-5 text-[var(--mint-400)]"
           />
-          <h2 className="font-display text-lg font-black">Missed questions</h2>
+          <h2 className="font-display text-lg font-bold">Missed questions</h2>
         </div>
         {missedQuizzes.length === 0 ? (
-          <p className="mt-4 rounded-[1.2rem] bg-[oklch(13%_0.018_165_/_0.62)] p-4 text-sm font-bold leading-7 text-[var(--ink-300)]">
+          <p className="mt-4 rounded-[0.85rem] bg-[oklch(13%_0.018_165_/_0.62)] p-4 text-sm font-bold leading-7 text-[var(--ink-300)]">
             No missed questions yet. 오늘 퀴즈를 풀고 틀린 문제가 생기면 여기에
             모입니다.
           </p>
@@ -66,7 +64,7 @@ export function TrainerScreen({
                 <button
                   type="button"
                   onClick={() => onStartQuiz([quiz.id])}
-                  className="w-full rounded-[1.2rem] border border-[oklch(86%_0.018_94_/_0.12)] bg-[oklch(13%_0.018_165_/_0.62)] p-4 text-left text-sm font-bold leading-7 text-[var(--ink-200)] transition hover:bg-[oklch(86%_0.018_94_/_0.06)]"
+                  className="w-full rounded-[0.85rem] border border-[oklch(86%_0.018_94_/_0.12)] bg-[oklch(13%_0.018_165_/_0.62)] p-4 text-left text-sm font-bold leading-7 text-[var(--ink-200)] transition hover:bg-[oklch(86%_0.018_94_/_0.06)]"
                 >
                   {quiz.prompt}
                 </button>

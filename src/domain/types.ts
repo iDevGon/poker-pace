@@ -50,3 +50,25 @@ export type TournamentChecklistItem = {
   label: string;
   description: string;
 };
+
+export type GtoActionMix = {
+  raise: number;
+  call: number;
+  fold: number;
+};
+
+export type GtoHandStrategy = GtoActionMix & {
+  id: string;
+  note: string;
+  exploit: string;
+};
+
+export type GtoSpot = {
+  id: string;
+  title: string;
+  format: string;
+  stackDepth: string;
+  position: string;
+  description: string;
+  hands: GtoHandStrategy[];
+};

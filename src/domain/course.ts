@@ -168,6 +168,38 @@ export const quizzes: Quiz[] = [
     explanation: '8 세 장과 K 두 장으로 풀하우스입니다.',
     tags: ['rank', 'showdown'],
   },
+  {
+    id: 'q-gto-baseline-1',
+    type: 'decision',
+    prompt:
+      '버튼에서 A♥ J♥를 들고 모두 폴드했습니다. GTO 기준선을 먼저 생각한다면 출발점은?',
+    context: '40BB, 버튼 오픈 상황',
+    choices: [
+      { id: 'fold', label: '대부분 Fold' },
+      { id: 'mix', label: '레이즈 중심으로 일부 섞기' },
+      { id: 'limp', label: '항상 Limp' },
+    ],
+    correctChoiceId: 'mix',
+    explanation:
+      'GTO는 한 가지 고정 답보다 상황별 빈도를 기준으로 봅니다. 버튼 AJs는 레이즈 중심의 강한 후보입니다.',
+    tags: ['gto', 'preflop'],
+  },
+  {
+    id: 'q-exploit-tight-blinds-1',
+    type: 'decision',
+    prompt:
+      '블라인드 두 명이 너무 자주 폴드합니다. 버튼 오픈 전략은 어떻게 조정할까요?',
+    context: '친구 대회, 블라인드가 3-bet을 거의 하지 않음',
+    choices: [
+      { id: 'tighten', label: '오픈 범위를 줄인다' },
+      { id: 'widen', label: '오픈 범위를 넓힌다' },
+      { id: 'limp', label: '모든 핸드를 림프한다' },
+    ],
+    correctChoiceId: 'widen',
+    explanation:
+      '익스플로잇은 상대의 반복 실수를 이용하는 조정입니다. 과폴드하는 블라인드에게는 더 넓게 오픈할 수 있습니다.',
+    tags: ['exploit', 'preflop'],
+  },
 ];
 
 const quizRotation = quizzes.map((quiz) => quiz.id);
@@ -221,6 +253,29 @@ export const courseUnits: CourseUnit[] = Array.from(
         '최종 리허설',
       ],
     ];
+    const extraLessonBlocks =
+      week === 2 && weekDay === 6
+        ? [
+            {
+              heading: 'GTO 기준선',
+              body: 'GTO는 상대가 완벽히 대응해도 크게 무너지지 않는 기준선입니다. 초보 단계에서는 정확한 solver 암기보다 “이 상황에서 어떤 액션을 얼마나 섞는가”를 보는 용도로 쓰면 충분합니다.',
+            },
+          ]
+        : week === 3 && weekDay === 6
+          ? [
+              {
+                heading: '익스플로잇 조정',
+                body: '익스플로잇은 상대의 반복 실수에 맞춰 기준선을 일부러 벗어나는 선택입니다. 너무 자주 폴드하는 상대에게는 블러프와 오픈을 늘리고, 너무 자주 콜하는 상대에게는 밸류 중심으로 압박합니다.',
+              },
+            ]
+          : week === 4 && weekDay === 6
+            ? [
+                {
+                  heading: '기준선과 조정의 순서',
+                  body: '먼저 GTO 기준선으로 기본 범위를 잡고, 친구들의 성향을 본 뒤 작은 조정을 합니다. 근거 없이 매번 바꾸는 것은 익스플로잇이 아니라 흔들림입니다.',
+                },
+              ]
+            : [];
 
     return {
       id: `w${week}d${weekDay}`,
@@ -238,6 +293,7 @@ export const courseUnits: CourseUnit[] = Array.from(
           heading: '실전 기준',
           body: '친구들과 하는 노리밋 홀덤 토너먼트에서는 애매한 큰 팟을 줄이고, 포지션이 좋을 때 좋은 패로 압박하는 습관이 중요합니다.',
         },
+        ...extraLessonBlocks,
       ],
       quizIds: [
         quizRotation[index % quizRotation.length],

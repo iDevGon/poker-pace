@@ -19,10 +19,8 @@ export function CourseScreen({
   return (
     <section className="rise-in space-y-6">
       <div>
-        <p className="font-display text-sm font-bold uppercase tracking-[0.28em] text-[var(--mint-400)]">
-          Course
-        </p>
-        <h1 className="font-display mt-3 text-[2rem] font-black leading-tight">
+        <p className="eyebrow">Course</p>
+        <h1 className="font-display mt-3 text-[2rem] font-bold leading-tight">
           4주 로드맵
         </h1>
         <p className="mt-2 text-sm leading-7 text-[var(--ink-300)]">
@@ -35,12 +33,9 @@ export function CourseScreen({
         <section
           key={week}
           aria-labelledby={`week-${week}-heading`}
-          className="surface rounded-[1.75rem] p-4"
+          className="surface rounded-[1.1rem] p-4"
         >
-          <h2
-            id={`week-${week}-heading`}
-            className="font-display text-sm font-black uppercase tracking-[0.2em] text-[var(--clay-300)]"
-          >
+          <h2 id={`week-${week}-heading`} className="eyebrow">
             Week {week}
           </h2>
           <ul className="mt-4 space-y-2">
@@ -58,9 +53,9 @@ export function CourseScreen({
                         complete ? ', completed' : ''
                       }${recommended ? ', recommended next' : ''}`}
                       onClick={() => onOpenUnit(unit.id)}
-                      className={`flex w-full items-center gap-3 rounded-[1.1rem] border p-3 text-left transition duration-200 active:translate-y-px ${
+                      className={`flex w-full items-center gap-3 rounded-[0.8rem] border p-3 text-left transition duration-200 active:translate-y-px ${
                         recommended
-                          ? 'border-[oklch(82%_0.085_55_/_0.5)] bg-[oklch(64%_0.13_43_/_0.12)]'
+                          ? 'border-[oklch(82%_0.085_55_/_0.5)] bg-[oklch(64%_0.13_43_/_0.1)]'
                           : 'border-[oklch(86%_0.018_94_/_0.1)] bg-[oklch(13%_0.018_165_/_0.56)] hover:bg-[oklch(86%_0.018_94_/_0.06)]'
                       }`}
                     >

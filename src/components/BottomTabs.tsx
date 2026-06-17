@@ -1,6 +1,12 @@
-import { BookOpen, Dumbbell, ListChecks, Sparkles } from 'lucide-react';
+import {
+  BookOpen,
+  Dumbbell,
+  Grid3X3,
+  ListChecks,
+  TimerReset,
+} from 'lucide-react';
 
-export type TabId = 'today' | 'course' | 'trainer' | 'tournament';
+export type TabId = 'today' | 'course' | 'trainer' | 'gto' | 'tournament';
 
 type BottomTabsProps = {
   activeTab: TabId;
@@ -8,19 +14,20 @@ type BottomTabsProps = {
 };
 
 const tabs = [
-  { id: 'today', label: 'Today', icon: Sparkles },
+  { id: 'today', label: 'Today', icon: TimerReset },
   { id: 'course', label: 'Course', icon: BookOpen },
   { id: 'trainer', label: 'Trainer', icon: Dumbbell },
+  { id: 'gto', label: 'GTO', icon: Grid3X3 },
   { id: 'tournament', label: 'Tournament', icon: ListChecks },
-] satisfies Array<{ id: TabId; label: string; icon: typeof Sparkles }>;
+] satisfies Array<{ id: TabId; label: string; icon: typeof TimerReset }>;
 
 export function BottomTabs({ activeTab, onChange }: BottomTabsProps) {
   return (
     <nav
       aria-label="Primary"
-      className="fixed inset-x-0 bottom-0 z-20 border-t border-[oklch(86%_0.018_94_/_0.12)] bg-[oklch(12%_0.015_165_/_0.94)] px-3 pb-3 pt-2 backdrop-blur"
+      className="fixed inset-x-0 bottom-0 z-20 border-t border-[oklch(86%_0.018_94_/_0.12)] bg-[oklch(12%_0.015_165_/_0.98)] px-3 pb-3 pt-2"
     >
-      <div className="mx-auto grid max-w-md grid-cols-4 gap-2">
+      <div className="mx-auto grid max-w-md grid-cols-5 gap-1.5">
         {tabs.map((tab) => {
           const Icon = tab.icon;
           const active = activeTab === tab.id;
@@ -31,9 +38,9 @@ export function BottomTabs({ activeTab, onChange }: BottomTabsProps) {
               type="button"
               aria-current={active ? 'page' : undefined}
               onClick={() => onChange(tab.id)}
-              className={`flex min-h-14 flex-col items-center justify-center rounded-[1rem] text-[11px] font-bold transition duration-200 active:translate-y-px ${
+              className={`flex min-h-14 flex-col items-center justify-center rounded-[0.8rem] text-[11px] font-bold transition duration-200 active:translate-y-px ${
                 active
-                  ? 'primary-action'
+                  ? 'tab-active'
                   : 'text-[var(--ink-300)] hover:bg-[oklch(86%_0.018_94_/_0.06)] hover:text-[var(--ink-100)]'
               }`}
             >

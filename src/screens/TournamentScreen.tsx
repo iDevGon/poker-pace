@@ -17,10 +17,8 @@ export function TournamentScreen({
   return (
     <section className="rise-in space-y-6">
       <div>
-        <p className="font-display text-sm font-bold uppercase tracking-[0.28em] text-[var(--mint-400)]">
-          Tournament
-        </p>
-        <h1 className="font-display mt-3 text-[2rem] font-black leading-tight">
+        <p className="eyebrow">Tournament</p>
+        <h1 className="font-display mt-3 text-[2rem] font-bold leading-tight">
           친구 대회 체크리스트
         </h1>
         <p className="mt-2 text-sm leading-7 text-[var(--ink-300)]">
@@ -29,14 +27,14 @@ export function TournamentScreen({
         </p>
       </div>
 
-      <div className="table-panel rounded-[2rem] p-5">
+      <div className="table-panel rounded-[1.2rem] p-5">
         <div className="flex items-center gap-3">
           <CheckSquare2
             aria-hidden="true"
             className="relative size-6 text-[var(--clay-300)]"
           />
           <div className="relative">
-            <p className="font-display text-sm font-black text-[var(--clay-300)]">
+            <p className="font-display text-sm font-bold text-[var(--clay-300)]">
               {doneCount}/{tournamentChecklistItems.length} decided
             </p>
             <p className="text-xs font-bold text-[var(--ink-300)]">
@@ -49,7 +47,7 @@ export function TournamentScreen({
       <ul className="space-y-3">
         {tournamentChecklistItems.map((item) => (
           <li key={item.id}>
-            <label className="surface flex gap-3 rounded-[1.5rem] p-4 transition hover:bg-[oklch(86%_0.018_94_/_0.06)]">
+            <label className="surface flex gap-3 rounded-[0.95rem] p-4 transition hover:bg-[oklch(86%_0.018_94_/_0.06)]">
               <input
                 type="checkbox"
                 name={item.id}

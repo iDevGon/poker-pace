@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Orbit&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Gowun+Dodum&display=swap");
 @import "tailwindcss";
 
 :root {
@@ -14,6 +14,7 @@
   --clay-300: oklch(82% 0.085 55);
   --mint-400: oklch(74% 0.115 166);
   --danger-400: oklch(67% 0.16 24);
+  --line-soft: oklch(86% 0.018 94 / 0.13);
   font-family:
     "Gowun Dodum", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
     "Segoe UI", sans-serif;
@@ -28,12 +29,12 @@ body {
   font-kerning: normal;
   text-rendering: geometricPrecision;
   background:
-    radial-gradient(
-      circle at 50% -20%,
-      oklch(32% 0.07 165 / 0.75),
-      transparent 44rem
+    repeating-linear-gradient(
+      90deg,
+      oklch(100% 0 0 / 0.018) 0 1px,
+      transparent 1px 7px
     ),
-    linear-gradient(180deg, var(--felt-900), var(--felt-950) 52%);
+    linear-gradient(180deg, oklch(16% 0.024 165), var(--felt-950) 58%);
 }
 
 h1,
@@ -84,51 +85,55 @@ input:focus-visible {
 }
 
 .font-display {
+  font-family: "Gowun Batang", "Gowun Dodum", ui-serif, Georgia, serif;
+}
+
+.eyebrow {
   font-family:
-    "Orbit", "Gowun Dodum", ui-sans-serif, system-ui, -apple-system,
-    BlinkMacSystemFont, sans-serif;
+    "Gowun Dodum", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    sans-serif;
+  color: var(--clay-300);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
 }
 
 .app-shell {
   background:
-    radial-gradient(
-      circle at 18% 0%,
-      oklch(66% 0.12 166 / 0.13),
-      transparent 18rem
-    ),
-    radial-gradient(
-      circle at 100% 20%,
-      oklch(66% 0.13 43 / 0.11),
-      transparent 16rem
+    linear-gradient(
+      90deg,
+      transparent 0 24px,
+      oklch(82% 0.085 55 / 0.07) 24px 25px,
+      transparent 25px
     ),
     linear-gradient(
       180deg,
-      oklch(17% 0.026 165 / 0.98),
-      oklch(12% 0.015 165 / 0.98)
+      oklch(17% 0.024 165 / 0.99),
+      oklch(12% 0.015 165 / 0.99)
     );
 }
 
 .table-panel {
   position: relative;
   overflow: hidden;
-  border: 1px solid oklch(82% 0.085 55 / 0.2);
+  border: 1px solid oklch(82% 0.085 55 / 0.24);
   background:
-    radial-gradient(
-      circle at 26% 0%,
-      oklch(74% 0.115 166 / 0.22),
-      transparent 16rem
+    repeating-linear-gradient(
+      0deg,
+      oklch(100% 0 0 / 0.018) 0 1px,
+      transparent 1px 9px
     ),
-    linear-gradient(145deg, oklch(23% 0.04 165), oklch(14% 0.02 165));
-  box-shadow: inset 0 1px 0 oklch(98% 0.01 94 / 0.08);
+    linear-gradient(180deg, oklch(20% 0.035 165), oklch(15% 0.024 165));
 }
 
 .table-panel::before {
   position: absolute;
-  inset: 12px;
+  inset: 10px;
   pointer-events: none;
   content: "";
-  border: 1px dashed oklch(82% 0.085 55 / 0.22);
-  border-radius: 1.45rem;
+  border: 1px solid oklch(82% 0.085 55 / 0.16);
+  border-radius: 1rem;
 }
 
 .chip {
@@ -136,25 +141,28 @@ input:focus-visible {
   min-height: 2rem;
   align-items: center;
   justify-content: center;
-  border: 1px solid oklch(82% 0.085 55 / 0.26);
-  border-radius: 999px;
-  background: oklch(20% 0.03 165);
+  border: 1px solid var(--line-soft);
+  border-radius: 0.55rem;
+  background: oklch(16% 0.022 165);
   color: var(--ink-200);
   font-variant-numeric: tabular-nums;
 }
 
 .surface {
-  border: 1px solid oklch(86% 0.018 94 / 0.12);
-  background: oklch(20% 0.025 165 / 0.82);
-  box-shadow: inset 0 1px 0 oklch(98% 0.01 94 / 0.05);
+  border: 1px solid var(--line-soft);
+  background: oklch(16% 0.022 165 / 0.9);
 }
 
 .primary-action {
-  background: linear-gradient(180deg, var(--clay-300), var(--clay-500));
+  border: 1px solid oklch(88% 0.08 55 / 0.42);
+  background: var(--clay-300);
   color: oklch(17% 0.026 165);
-  box-shadow:
-    inset 0 1px 0 oklch(98% 0.01 94 / 0.34),
-    0 12px 26px oklch(8% 0.02 165 / 0.35);
+}
+
+.tab-active {
+  border: 1px solid oklch(82% 0.085 55 / 0.34);
+  background: oklch(20% 0.03 165);
+  color: var(--clay-300);
 }
 
 @media (prefers-reduced-motion: no-preference) {

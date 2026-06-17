@@ -17,6 +17,7 @@ import type {
   QuizAnswerRecord,
 } from './domain/types';
 import { CourseScreen } from './screens/CourseScreen';
+import { GTOScreen } from './screens/GTOScreen';
 import { LessonScreen } from './screens/LessonScreen';
 import { TodayScreen } from './screens/TodayScreen';
 import { TournamentScreen } from './screens/TournamentScreen';
@@ -100,7 +101,7 @@ export default function App() {
       </a>
       <div
         id="main-content"
-        className="app-shell mx-auto min-h-screen w-full max-w-md border-x border-[oklch(86%_0.018_94_/_0.1)] px-5 pb-28 pt-6 shadow-2xl shadow-black/50"
+        className="app-shell mx-auto min-h-screen w-full max-w-md border-x border-[oklch(86%_0.018_94_/_0.1)] px-5 pb-28 pt-6"
       >
         {activeUnit ? (
           <LessonScreen
@@ -134,6 +135,7 @@ export default function App() {
                 onStartQuiz={startTrainerQuiz}
               />
             ) : null}
+            {activeTab === 'gto' ? <GTOScreen /> : null}
             {activeTab === 'tournament' ? (
               <TournamentScreen
                 checklist={progress.tournamentChecklist}

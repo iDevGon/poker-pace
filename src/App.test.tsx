@@ -73,4 +73,20 @@ describe('Poker Pace app', () => {
       screen.getByRole('button', { name: /random 10 questions/i }),
     ).toBeInTheDocument();
   });
+
+  it('opens the GTO wizard and shows hand action frequencies', async () => {
+    const user = userEvent.setup();
+    render(<App />);
+
+    await user.click(screen.getByRole('button', { name: /^gto$/i }));
+    await user.click(screen.getByRole('button', { name: /AJs/i }));
+
+    expect(
+      screen.getByRole('heading', { name: /GTO Wizard Lite/i }),
+    ).toBeInTheDocument();
+    expect(screen.getByText(/Raise 70%/i)).toBeInTheDocument();
+    expect(screen.getByText(/Call 20%/i)).toBeInTheDocument();
+    expect(screen.getByText(/Fold 10%/i)).toBeInTheDocument();
+    expect(screen.getByText(/3-bet이 잦으면/i)).toBeInTheDocument();
+  });
 });

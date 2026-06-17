@@ -11,7 +11,7 @@ export function ProgressRing({ percent }: ProgressRingProps) {
       aria-valuemax={100}
       aria-valuemin={0}
       aria-valuenow={percent}
-      className="grid size-16 place-items-center rounded-full border border-[oklch(82%_0.085_55_/_0.34)] bg-[conic-gradient(from_180deg,var(--clay-300)_0deg,var(--clay-500)_var(--progress-angle),oklch(24%_0.035_165)_0deg)] p-1 shadow-inner"
+      className="grid size-16 place-items-center rounded-full border border-[oklch(82%_0.085_55_/_0.34)] bg-[conic-gradient(from_180deg,var(--clay-300)_0deg,var(--clay-500)_var(--progress-angle),oklch(24%_0.035_165)_0deg)] p-1"
       role="progressbar"
       style={{ '--progress-angle': `${percent * 3.6}deg` } as CSSProperties}
     >

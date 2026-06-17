@@ -19,10 +19,8 @@ export function TodayScreen({
 }: TodayScreenProps) {
   if (!unit) {
     return (
-      <section className="surface rise-in rounded-[2rem] p-6">
-        <p className="font-display text-sm font-bold uppercase tracking-[0.28em] text-[var(--mint-400)]">
-          Complete
-        </p>
+      <section className="surface rise-in rounded-[1.1rem] p-6">
+        <p className="eyebrow">Complete</p>
         <h1 className="font-display mt-4 text-3xl font-black">
           28개 학습을 모두 끝냈습니다.
         </h1>
@@ -37,26 +35,24 @@ export function TodayScreen({
     <section className="rise-in space-y-6">
       <div className="flex items-start justify-between gap-4">
         <div>
-          <p className="font-display text-sm font-bold uppercase tracking-[0.28em] text-[var(--mint-400)]">
-            Poker Pace
-          </p>
-          <h1 className="font-display mt-3 max-w-[11ch] text-[1.85rem] font-black leading-[1.16] tracking-[-0.01em]">
+          <p className="eyebrow">Poker Pace</p>
+          <h1 className="font-display mt-3 max-w-[11ch] text-[1.9rem] font-bold leading-[1.18]">
             오늘은 한 손만 더 좋은 결정을 만듭니다.
           </h1>
         </div>
         <ProgressRing percent={percent} />
       </div>
 
-      <div className="table-panel rounded-[2rem] p-5">
+      <div className="table-panel rounded-[1.2rem] p-5">
         <div className="relative flex items-center justify-between gap-3">
-          <p className="font-display text-xs font-black uppercase tracking-[0.22em] text-[var(--clay-300)]">
+          <p className="eyebrow">
             Week {unit.week} Day {unit.day}
           </p>
-          <span className="chip px-3 py-1 text-xs font-bold">
+          <span className="chip px-2.5 py-1 text-xs font-bold">
             {unit.estimatedMinutes} min
           </span>
         </div>
-        <h2 className="font-display relative mt-6 text-2xl font-black">
+        <h2 className="font-display relative mt-6 text-2xl font-bold">
           {unit.title}
         </h2>
         <p className="relative mt-3 text-sm leading-7 text-[var(--ink-300)]">
@@ -83,7 +79,7 @@ export function TodayScreen({
         <button
           type="button"
           onClick={() => onStartLesson(unit.id)}
-          className="primary-action relative mt-6 flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl px-4 text-sm font-black uppercase tracking-[0.16em] transition duration-200 hover:brightness-105 active:translate-y-px"
+          className="primary-action relative mt-6 flex min-h-14 w-full items-center justify-center gap-2 rounded-[0.85rem] px-4 text-sm font-black uppercase tracking-[0.12em] transition duration-200 hover:brightness-105 active:translate-y-px"
         >
           Start lesson
           <ArrowRight aria-hidden="true" className="size-5" />
