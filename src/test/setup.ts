@@ -1,4 +1,6 @@
 import '@testing-library/jest-dom/vitest';
+import { cleanup } from '@testing-library/react';
+import { afterEach } from 'vitest';
 
 const storage = new Map<string, string>();
 
@@ -10,4 +12,8 @@ Object.defineProperty(globalThis, 'localStorage', {
     setItem: (key: string, value: string) => storage.set(key, value),
   },
   configurable: true,
+});
+
+afterEach(() => {
+  cleanup();
 });
