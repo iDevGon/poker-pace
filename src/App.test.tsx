@@ -46,20 +46,6 @@ describe('Poker Pace app', () => {
     expect(screen.getByText(/해설/i)).toBeInTheDocument();
   });
 
-  it('persists tournament checklist selections after reload', async () => {
-    const user = userEvent.setup();
-    const { unmount } = render(<App />);
-
-    await user.click(screen.getByRole('button', { name: /대회/i }));
-    await user.click(screen.getByRole('checkbox', { name: /시작 칩/i }));
-    unmount();
-
-    render(<App />);
-    await user.click(screen.getByRole('button', { name: /대회/i }));
-
-    expect(screen.getByRole('checkbox', { name: /시작 칩/i })).toBeChecked();
-  });
-
   it('shows an empty missed-question trainer state', async () => {
     const user = userEvent.setup();
     render(<App />);

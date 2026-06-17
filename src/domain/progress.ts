@@ -4,7 +4,6 @@ export const initialProgress: ProgressState = {
   completedUnitIds: [],
   currentUnitId: null,
   quizAnswers: [],
-  tournamentChecklist: {},
 };
 
 export function getNextRecommendedUnit(
@@ -59,17 +58,4 @@ export function getCompletionPercent(
     return 0;
   }
   return Math.round((progress.completedUnitIds.length / units.length) * 100);
-}
-
-export function toggleChecklistItem(
-  progress: ProgressState,
-  itemId: string,
-): ProgressState {
-  return {
-    ...progress,
-    tournamentChecklist: {
-      ...progress.tournamentChecklist,
-      [itemId]: !progress.tournamentChecklist[itemId],
-    },
-  };
 }

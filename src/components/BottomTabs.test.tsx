@@ -10,4 +10,10 @@ describe('BottomTabs', () => {
       'bottom-nav',
     );
   });
+
+  it('does not expose the tournament checklist tab', () => {
+    render(<BottomTabs activeTab="today" onChange={vi.fn()} />);
+
+    expect(screen.queryByRole('button', { name: /대회/i })).toBeNull();
+  });
 });

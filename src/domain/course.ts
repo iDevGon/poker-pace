@@ -1,4 +1,4 @@
-import type { CourseUnit, Quiz, TournamentChecklistItem } from './types';
+import type { CourseUnit, Quiz } from './types';
 
 const basicChoices = [
   { id: 'fold', label: 'Fold' },
@@ -189,7 +189,7 @@ export const quizzes: Quiz[] = [
     type: 'decision',
     prompt:
       '블라인드 두 명이 너무 자주 폴드합니다. 버튼 오픈 전략은 어떻게 조정할까요?',
-    context: '친구 대회, 블라인드가 3-bet을 거의 하지 않음',
+    context: '블라인드가 3-bet을 거의 하지 않는 테이블',
     choices: [
       { id: 'tighten', label: '오픈 범위를 줄인다' },
       { id: 'widen', label: '오픈 범위를 넓힌다' },
@@ -249,7 +249,7 @@ export const courseUnits: CourseUnit[] = Array.from(
         '블라인드 압박',
         '버블 감각',
         '파이널 테이블',
-        '친구 대회 전략',
+        '상대 성향 조정',
         '최종 리허설',
       ],
     ];
@@ -272,7 +272,7 @@ export const courseUnits: CourseUnit[] = Array.from(
             ? [
                 {
                   heading: '기준선과 조정의 순서',
-                  body: '먼저 GTO 기준선으로 기본 범위를 잡고, 친구들의 성향을 본 뒤 작은 조정을 합니다. 근거 없이 매번 바꾸는 것은 익스플로잇이 아니라 흔들림입니다.',
+                  body: '먼저 GTO 기준선으로 기본 범위를 잡고, 상대의 반복 성향을 본 뒤 작은 조정을 합니다. 근거 없이 매번 바꾸는 것은 익스플로잇이 아니라 흔들림입니다.',
                 },
               ]
             : [];
@@ -291,7 +291,7 @@ export const courseUnits: CourseUnit[] = Array.from(
         },
         {
           heading: '실전 기준',
-          body: '친구들과 하는 노리밋 홀덤 토너먼트에서는 애매한 큰 팟을 줄이고, 포지션이 좋을 때 좋은 패로 압박하는 습관이 중요합니다.',
+          body: '노리밋 홀덤에서는 애매한 큰 팟을 줄이고, 포지션이 좋을 때 좋은 패로 압박하는 습관이 중요합니다.',
         },
         ...extraLessonBlocks,
       ],
@@ -302,41 +302,3 @@ export const courseUnits: CourseUnit[] = Array.from(
     };
   },
 );
-
-export const tournamentChecklistItems: TournamentChecklistItem[] = [
-  {
-    id: 'participants',
-    label: '참가 인원',
-    description: '몇 명이 시작하고 중간 참가를 허용할지 정합니다.',
-  },
-  {
-    id: 'starting-chips',
-    label: '시작 칩',
-    description: '모든 참가자가 같은 시작 칩을 받도록 정합니다.',
-  },
-  {
-    id: 'blind-interval',
-    label: '블라인드 상승 간격',
-    description: '블라인드가 몇 분마다 오를지 정합니다.',
-  },
-  {
-    id: 'blind-structure',
-    label: '블라인드 구조',
-    description: '첫 블라인드와 상승 단계를 미리 적습니다.',
-  },
-  {
-    id: 'rebuy',
-    label: '리바이 룰',
-    description: '탈락 후 재참가 가능 여부와 횟수를 정합니다.',
-  },
-  {
-    id: 'chip-colors',
-    label: '칩 색상',
-    description: '칩 색상별 가치를 헷갈리지 않게 정합니다.',
-  },
-  {
-    id: 'prize',
-    label: '상품 배분',
-    description: '상금이나 상품 배분 방식을 미리 합의합니다.',
-  },
-];

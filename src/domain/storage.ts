@@ -11,8 +11,7 @@ function isProgressState(value: unknown): value is ProgressState {
   const candidate = value as Partial<ProgressState>;
   return (
     Array.isArray(candidate.completedUnitIds) &&
-    Array.isArray(candidate.quizAnswers) &&
-    typeof candidate.tournamentChecklist === 'object'
+    Array.isArray(candidate.quizAnswers)
   );
 }
 

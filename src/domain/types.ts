@@ -42,13 +42,6 @@ export type ProgressState = {
   completedUnitIds: string[];
   currentUnitId: string | null;
   quizAnswers: QuizAnswerRecord[];
-  tournamentChecklist: Record<string, boolean>;
-};
-
-export type TournamentChecklistItem = {
-  id: string;
-  label: string;
-  description: string;
 };
 
 export type GtoActionMix = {

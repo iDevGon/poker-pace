@@ -25,7 +25,7 @@ export function TodayScreen({
           28개 학습을 모두 끝냈습니다.
         </h1>
         <p className="mt-3 text-sm leading-7 text-[var(--ink-300)]">
-          복습에서 틀린 문제를 반복하면 대회 전 감각을 유지하기 좋습니다.
+          복습에서 틀린 문제를 반복하면 판단 감각을 유지하기 좋습니다.
         </p>
       </section>
     );

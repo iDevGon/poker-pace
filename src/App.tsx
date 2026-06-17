@@ -8,7 +8,6 @@ import {
   getNextRecommendedUnit,
   initialProgress,
   recordQuizAnswer,
-  toggleChecklistItem,
 } from './domain/progress';
 import { loadProgress, saveProgress } from './domain/storage';
 import type {
@@ -20,7 +19,6 @@ import { CourseScreen } from './screens/CourseScreen';
 import { GTOScreen } from './screens/GTOScreen';
 import { LessonScreen } from './screens/LessonScreen';
 import { TodayScreen } from './screens/TodayScreen';
-import { TournamentScreen } from './screens/TournamentScreen';
 import { TrainerScreen } from './screens/TrainerScreen';
 
 export default function App() {
@@ -68,10 +66,6 @@ export default function App() {
     if (unitId !== 'trainer-session') {
       setProgress((current) => completeUnit(current, unitId));
     }
-  };
-
-  const toggleTournamentItem = (itemId: string) => {
-    setProgress((current) => toggleChecklistItem(current, itemId));
   };
 
   const startTrainerQuiz = (quizIds: string[]) => {
@@ -136,12 +130,6 @@ export default function App() {
               />
             ) : null}
             {activeTab === 'gto' ? <GTOScreen /> : null}
-            {activeTab === 'tournament' ? (
-              <TournamentScreen
-                checklist={progress.tournamentChecklist}
-                onToggleItem={toggleTournamentItem}
-              />
-            ) : null}
           </>
         )}
       </div>

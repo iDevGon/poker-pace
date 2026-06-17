@@ -54,4 +54,10 @@ describe('PWA metadata', () => {
     expect(serviceWorker).toContain("event.request.mode === 'navigate'");
     expect(serviceWorker).toContain('fetch(event.request)');
   });
+
+  it('opts into safe-area viewport handling for mobile browsers', () => {
+    expect(html).toContain(
+      'content="width=device-width, initial-scale=1.0, viewport-fit=cover"',
+    );
+  });
 });
